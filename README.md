@@ -1,5 +1,5 @@
-# FlashMemory
-FlashMemory is a Swift-based flashcard application designed to supercharge retention. Unlike traditional flashcard apps, it integrates advanced mnemonic strategies to help users move information from short-term to long-term memory more efficiently.
+# Memory On The GO
+Memory On The GO is a Swift-based flashcard application designed to supercharge retention. Unlike traditional flashcard apps, it integrates advanced mnemonic strategies to help users move information from short-term to long-term memory more efficiently.
 
 ### 🧠 Key Features
 - **Flashcards App**: Simple, intuitive memory and quiz interface.

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct FlashMemory: View {
+struct MemoryOnTheGO: View {
     
     @State var devMode = true
     
@@ -27,5 +27,5 @@ struct FlashMemory: View {
 }
 
 #Preview {
-    FlashMemory()
+    MemoryOnTheGO()
 }

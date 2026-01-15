@@ -10,10 +10,10 @@ import SwiftData
 
 
 @main
-struct FlashMemoryApp: App {    
+struct MemoryOnTheGOApp: App {
     var body: some Scene {
         WindowGroup {
-            FlashMemory()
+            MemoryOnTheGO()
         }
         .modelContainer(for: [FlashCard.self, Deck.self])
     }
