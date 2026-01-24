@@ -35,8 +35,8 @@ func addDeck(_ newDeck: Deck, to context: ModelContext) {
 func updateDeck(_ oldDeck: Deck, to newDeck: Deck, in context: ModelContext ) {
     
     oldDeck.name = newDeck.name
+    oldDeck.desc = newDeck.desc
     oldDeck.img = newDeck.img
-    oldDeck.theme = newDeck.theme
     oldDeck.cards = newDeck.cards
     
     do {
@@ -104,6 +104,43 @@ func hardDeleteDeck(_ deck: Deck, from context: ModelContext) {
         print("hardDeleteDeck failed: \(error)")
     }
     
+}
+
+func pinDeck(_ deck: Deck, in context: ModelContext) {
+    deck.pinned = true
+    moveDeck(deck, to: 0, in: context)
+    
+    do {
+        try context.save()
+    } catch {
+        print("pinDeck failed: \(error)")
+    }
+}
+
+func unpinDeck(_ deck: Deck, in context: ModelContext) {
+    deck.pinned = false
+    
+    let predicate = #Predicate<Deck> { deck in
+        deck.deletedAt == nil && deck.pinned == true
+    }
+    
+    var descriptor = FetchDescriptor<Deck>(
+        predicate: predicate,
+        sortBy: [SortDescriptor(\.sortOrder, order: .reverse)]
+    )
+    descriptor.fetchLimit = 1
+    
+    do {
+        let results = try context.fetch(descriptor)
+        let greatestSortOrder = results.first?.sortOrder ?? 0
+        moveDeck(deck, to: (greatestSortOrder + 1), in: context)
+        
+        try context.save()
+        
+    } catch {
+        print("unpinDeck failed: \(error)")
+    }
+
 }
 
 func moveDeck(_ deck: Deck, to destination: Int, in context: ModelContext) {

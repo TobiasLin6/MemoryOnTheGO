@@ -9,21 +9,40 @@ import SwiftUI
 
 struct MemoryOnTheGO: View {
     
-    @State var devMode = true
+    @State var devMode: Bool = true
+    @State var currentPage: String = "home"
+    @State var showNewDeckModal: Bool = false
+    @State var tutorialStage: Int = -1  // -1 = tutorial not enabled
+    @State var path = NavigationPath()
     
     var body: some View {
-        TabView {
-            Tab("My Decks", systemImage:"folder") {
-                MyDecksView(devMode: $devMode)
-            }
-            Tab("About", systemImage: "lightbulb") {
-                AboutView()
-            }
-            Tab("Settings", systemImage: "gearshape") {
-                SettingsView()
+        NavigationStack(path: $path){
+            ZStack {
+                // MARK: Background
+                LinearGradient(colors: [Color("bg-purple-dark"), Color("bg-purple")],
+                               startPoint: .topLeading,
+                               endPoint: .bottomTrailing)
+                .ignoresSafeArea()
+                
+                // MARK: Content
+                Group {
+                    if currentPage == "home" || currentPage == "decks" {
+                        HomeView(currentPage: $currentPage, path: $path)
+                        
+                    } else if currentPage == "about" {
+                        AboutView()
+                    }
+                }
+                
+                //MARK: Tab Bar
+                CustomTabBarView(currentPage: $currentPage, showNewDeckModal: $showNewDeckModal)
+                
+                    
+                
             }
         }
     }
+        
 }
 
 #Preview {

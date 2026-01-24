@@ -48,9 +48,10 @@ class FlashCard: Identifiable, CustomStringConvertible{
 class Deck: Identifiable, CustomStringConvertible {
     var id = UUID()
     var name: String
+    var desc: String
     var sortOrder: Int
-    var theme: String
-    var img: String?
+    var pinned: Bool
+    var img: UniversalImage
     var deletedAt: Date?
     
     @Relationship(deleteRule: .cascade)
@@ -59,28 +60,29 @@ class Deck: Identifiable, CustomStringConvertible {
     
     init(
         name: String = "New Deck",
+        desc: String = "",
         sortOrder: Int = 0,
-        theme: String = "default",
-        img: String? = nil,
+        pinned: Bool = false,
+        img: UniversalImage = .symbol("photo"),
         cards: [FlashCard] = [],
     ){
         self.name = name
+        self.desc = desc
         self.sortOrder = sortOrder
-        self.theme = theme
+        self.pinned = pinned
         self.img = img
         self.deletedAt = nil
         self.cards = cards
     }
     
     var description: String {
-        return "Name: \(name), Sort Order: \(sortOrder), Theme: \(theme), Image: \(img ?? "None"), DeletedAt: \(deletedAt?.description ?? "None")"
+        return "Name: \(name), Description \(desc), Sort Order: \(sortOrder), Pinned: \(pinned), Image: \(img.id), DeletedAt: \(deletedAt?.description ?? "None")"
     }
     
     func export() -> DeckExport {
         DeckExport (
             id: id,
             name: name,
-            theme: theme,
             cards: cards.map{$0.export()}
         )
     }
@@ -98,7 +100,6 @@ struct FlashCardExport: Codable {
 struct DeckExport: Codable {
     var id: UUID
     var name: String
-    var theme: String
     var cards: [FlashCardExport]
 }
 
@@ -144,5 +145,25 @@ let appleCards = [
 
 let appleTriviaDeck = Deck(
     name: "Apple History & Lore",
-    cards: appleCards
+    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
+    cards: appleCards,
 )
+
+let appleTriviaDeck2 = Deck(
+    name: "Apple History & Lore2",
+    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
+    cards: appleCards,
+)
+
+let appleTriviaDeck3 = Deck(
+    name: "Apple History & Lore3",
+    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
+    cards: appleCards,
+)
+
+let appleTriviaDeck4 = Deck(
+    name: "Apple History & Lore4",
+    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
+    cards: appleCards,
+)
+
