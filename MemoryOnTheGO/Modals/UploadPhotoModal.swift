@@ -6,11 +6,16 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct UploadPhotoModal: View {
     
     @Binding var showPhotoModal: Bool
     @Binding var photo: UniversalImage
+    
+    @State private var photoTmp: UniversalImage = UniversalImage.symbol("photo")
+    @State private var showingCamera = false
+    @State private var selectedItem: PhotosPickerItem?
     
     @State private var mainOffset: CGFloat = 1000
     @State private var gestureOffset: CGFloat = 0
@@ -32,19 +37,53 @@ struct UploadPhotoModal: View {
                         .padding(.bottom, 20)
                         
                         HStack {
-                            GhostBtn(title: "Open Photos", horizPadding: 55, onTap: {})
+                            
+                            PhotosPicker(selection: $selectedItem,
+                                         matching: .images,
+                                         photoLibrary: .shared()) {
+                                Text("Open Photos")
+                                    .font(.custom(Constants.Fonts.regular, size: 22))
+                                    .foregroundColor(Color("main-gray"))
+                                    .padding(.horizontal, 55)
+                                    .frame(height: 65)
+                                    .background {
+                                        RoundedRectangle(cornerRadius: 33)
+                                            .fill(.clear)
+                                            .stroke(Color("text-field-bg"), lineWidth: 3)
+                                    }
+                            }
+                                         .onChange(of: selectedItem) { _ , newItem in
+                                             if let newItem = newItem {
+                                                 Task{
+                                                     if let data = try? await newItem.loadTransferable(type: Data.self) {
+                                                         photoTmp = UniversalImage.imageData(data)
+                                                     }
+                                                 }
+                                             }
+                                         }
+
+                            
                             Spacer()
                                 .frame(width: 30)
-                            GhostBtn(title: "Take Photo", horizPadding: 55, onTap: {})
+                            GhostBtn(title: "Take Photo", horizPadding: 55, onTap: {showingCamera = true})
+                                .sheet(isPresented: $showingCamera) {
+                                    CameraView(image: $photoTmp)
+                                }
                         }
                         .padding(.bottom, 10)
-                        GhostBtn(title: "Pick from Library", horizPadding: 100, onTap: {})
+                        GhostBtn(title: "Pick from Library", horizPadding: 100, onTap: {
+                            // TODO: Add pick from library
+                        })
                         
-                        UniversalImageView(source: photo)
+                        UniversalImageView(source: photoTmp)
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 200, height: 200)
+                            .padding(10)
                         
-                        SubmitBtn(title: "Done", onTap: {})
+                        SubmitBtn(title: "Done", onTap: {
+                            photo = photoTmp
+                            showPhotoModal = false
+                        })
                             .padding(.bottom, 50)
                     }
                     .padding(.horizontal, 10)
@@ -78,6 +117,7 @@ struct UploadPhotoModal: View {
             withAnimation(.spring()) {
                 mainOffset = newVal ? 15.0 : 1000
             }
+            photoTmp = UniversalImage.symbol("photo")
         }
         
     }

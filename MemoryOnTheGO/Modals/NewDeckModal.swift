@@ -118,6 +118,9 @@ struct NewDeckModal: View {
             if newVal {
                 isInputActive = false
             }
+            deckName = ""
+            deckDesc = ""
+            deckImg = UniversalImage.symbol("photo")
         }
         .ignoresSafeArea()
         
