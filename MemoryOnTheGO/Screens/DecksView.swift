@@ -15,7 +15,6 @@ struct DecksView: View {
     @State private var mainOffset: CGFloat = Constants.lowModalOffset
     @State private var dragOffset: CGFloat = 0
     @State private var lockModal: Bool = false
-    @Binding var path: NavigationPath
     
     var body: some View {
         VStack {
@@ -27,7 +26,7 @@ struct DecksView: View {
                 // MARK: Content
                 ZStack {
                     VStack {
-                        DecksContentView(lockModal: $lockModal, path: $path, currentPage: $currentPage)
+                        DecksContentView(lockModal: $lockModal, currentPage: $currentPage)
                     }
                     
                     // MARK: Search Bar
@@ -77,5 +76,5 @@ struct DecksView: View {
 
 
 #Preview {
-    DecksView(currentPage: .constant("home"), path: .constant(NavigationPath()))
+    DecksView(currentPage: .constant("home"))
 }

@@ -9,7 +9,12 @@ import SwiftUI
 
 struct AboutView: View {
     var body: some View {
-        Text("About")
+        ScrollView {
+            Text("About")
+            Rectangle()
+                .fill(.red)
+                .frame(width: 300, height: 100)
+        }
     }
 }
 

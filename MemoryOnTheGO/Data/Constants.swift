@@ -16,6 +16,12 @@ enum Constants {
     
     static let decksNavPickerPinned: CGFloat = -90
     static let decksNavPickerAll: CGFloat = 110
+    
+    static let deckNameMaxChars: Int = 25
+    static let deckDescMaxChars: Int = 75
+    
+    static let createDeckModalHeight: CGFloat = 800
+    static let uploadPhotoModalHeight: CGFloat = 575
 
     
     enum Fonts {

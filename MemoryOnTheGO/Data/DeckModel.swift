@@ -34,7 +34,7 @@ class FlashCard: Identifiable, CustomStringConvertible{
         return "Question: \(question), Answer: \(answer) | Skill: \(skill), Image \(img ?? "None"), Sound: \(sound ?? "None")"
     }
     
-    func export() -> FlashCardExport {
+    nonisolated func export() -> FlashCardExport {
         FlashCardExport(
             id: id,
             question: question,
@@ -51,11 +51,18 @@ class Deck: Identifiable, CustomStringConvertible {
     var desc: String
     var sortOrder: Int
     var pinned: Bool
-    var img: UniversalImage
     var deletedAt: Date?
+    
+    private var imageRawValue: String
     
     @Relationship(deleteRule: .cascade)
     var cards: [FlashCard] = []
+    
+    @Transient
+    var img: UniversalImage {
+        get { UniversalImage.decode(from: imageRawValue)}
+        set { imageRawValue = newValue.encode()}
+    }
     
     
     init(
@@ -70,7 +77,7 @@ class Deck: Identifiable, CustomStringConvertible {
         self.desc = desc
         self.sortOrder = sortOrder
         self.pinned = pinned
-        self.img = img
+        self.imageRawValue = img.encode()
         self.deletedAt = nil
         self.cards = cards
     }
@@ -79,7 +86,7 @@ class Deck: Identifiable, CustomStringConvertible {
         return "Name: \(name), Description \(desc), Sort Order: \(sortOrder), Pinned: \(pinned), Image: \(img.id), DeletedAt: \(deletedAt?.description ?? "None")"
     }
     
-    func export() -> DeckExport {
+    nonisolated func export() -> DeckExport {
         DeckExport (
             id: id,
             name: name,
@@ -149,21 +156,4 @@ let appleTriviaDeck = Deck(
     cards: appleCards,
 )
 
-let appleTriviaDeck2 = Deck(
-    name: "Apple History & Lore2",
-    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
-    cards: appleCards,
-)
-
-let appleTriviaDeck3 = Deck(
-    name: "Apple History & Lore3",
-    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
-    cards: appleCards,
-)
-
-let appleTriviaDeck4 = Deck(
-    name: "Apple History & Lore4",
-    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
-    cards: appleCards,
-)
 

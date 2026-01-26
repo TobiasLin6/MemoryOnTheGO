@@ -7,50 +7,58 @@
 
 import SwiftUI
 import VisualEffectBlurView
+import UIKit
 
 struct HomeView: View {
     
     @Binding var currentPage: String
-    @Binding var path: NavigationPath
+    
+    let screenWidth = UIScreen.main.bounds.width
+    let screenHeight = UIScreen.main.bounds.height
     
     var body: some View {
-        
-        ZStack {
-            
-            // MARK: Background Image
-            Image("HomePageSplash")
-                .resizable()
-                .ignoresSafeArea()
-            
-            // MARK: Tutorial
-            TutorialBtn(currentPage: $currentPage)
-            
-            // MARK: Settings
-            HStack {
-                Spacer()
-                VStack {
-                    Button {
-                        
-                    } label: {
-                        Image(systemName: "gearshape")
-                            .resizable()
-                            .frame(width: 28, height: 28)
-                            .foregroundColor(Color("deck-itm-pin"))
+            ScrollView {
+                ZStack {
+                    
+                    // MARK: Background Image
+                    Image("HomePageSplash")
+                        .resizable()
+                        .ignoresSafeArea()
+                    
+                    // MARK: Tutorial
+                    TutorialBtn(currentPage: $currentPage)
+                    
+                    // MARK: Settings
+                    HStack {
+                        Spacer()
+                        VStack {
+                            Button {
+                                
+                            } label: {
+                                Image(systemName: "gearshape")
+                                    .resizable()
+                                    .frame(width: 28, height: 28)
+                                    .foregroundColor(Color("deck-itm-pin"))
+                            }
+                            Spacer()
+                        }
+                        .padding(.vertical, 55)
                     }
-                    Spacer()
-                }
-                .padding(.vertical, 35)
-            }
-            .padding(.horizontal, 30)
+                    .padding(.horizontal, 30)
 
-            // MARK: Decks Modal
-            DecksView(currentPage: $currentPage, path: $path)
-            
-            
-        }
+                    // MARK: Decks Modal
+                    DecksView(currentPage: $currentPage)
+                    
+                    
+                }
+                .frame(width: screenWidth, height: screenHeight)
+            }
+            .ignoresSafeArea()
+            .scrollDisabled(true)
+        
     }
 }
 
 #Preview {
-    HomeView(currentPage: .constant("home"), path: .constant(NavigationPath()))
+    HomeView(currentPage: .constant("home"))
 }
