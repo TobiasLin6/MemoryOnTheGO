@@ -14,24 +14,33 @@ class FlashCard: Identifiable, CustomStringConvertible{
     var question: String
     var answer: String
     var skill: Int  // 0-5 where 5 is mastered and 0 is just started learning
-    var img: String?
     var sound: String?
+    var searchText: String
+    
+    var imageRawValue: String
+    
+    @Transient
+    var img: UniversalImage {
+        get { UniversalImage.decode(from: imageRawValue)}
+        set { imageRawValue = newValue.encode()}
+    }
     
     init(
         question: String,
         answer: String,
-        img: String? = nil,
+        img: UniversalImage = .symbol("photo"),
         sound: String? = nil,
     ) {
         self.question = question
         self.answer = answer
         self.skill = 0
-        self.img = img
+        self.imageRawValue = img.encode()
         self.sound = sound
+        self.searchText = "\(question) \(answer)"
     }
     
     var description: String {
-        return "Question: \(question), Answer: \(answer) | Skill: \(skill), Image \(img ?? "None"), Sound: \(sound ?? "None")"
+        return "Question: \(question), Answer: \(answer) | Skill: \(skill), Image \(img.id), Sound: \(sound ?? "None")"
     }
     
     nonisolated func export() -> FlashCardExport {
@@ -52,6 +61,7 @@ class Deck: Identifiable, CustomStringConvertible {
     var sortOrder: Int
     var pinned: Bool
     var deletedAt: Date?
+    var searchText: String
     
     private var imageRawValue: String
     
@@ -80,6 +90,7 @@ class Deck: Identifiable, CustomStringConvertible {
         self.imageRawValue = img.encode()
         self.deletedAt = nil
         self.cards = cards
+        self.searchText = "\(name) \(desc)"
     }
     
     var description: String {

@@ -48,11 +48,9 @@ struct DecksContentView: View {
                     .id(ScrollTarget.bottom)
                 }
             .scrollTargetLayout()
-            .ignoresSafeArea(.keyboard)
-            
-            
-            }
-        
+            .ignoresSafeArea()
+        }
+        .frame(height: 825)
         .padding(.vertical, 20)
         .padding(.horizontal, 10)
         .scrollDisabled(scrollDisabled)

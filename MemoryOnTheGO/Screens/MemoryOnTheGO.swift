@@ -14,6 +14,7 @@ struct MemoryOnTheGO: View {
     @State var showNewDeckModal: Bool = false
     @State var tutorialStage: Int = -1  // -1 = tutorial not enabled
     
+    @State var navStackID = UUID()
     
     var body: some View {
         GeometryReader { geo in
@@ -23,6 +24,7 @@ struct MemoryOnTheGO: View {
                 LinearGradient(colors: [Color("bg-purple-dark"), Color("bg-purple")],
                                startPoint: .topLeading,
                                endPoint: .bottomTrailing)
+                .ignoresSafeArea()
                 
                 // MARK: Content
                 
@@ -34,9 +36,10 @@ struct MemoryOnTheGO: View {
                         AboutView()
                     }
                 }
+                .id(navStackID)
                 
                 // MARK: Tab Bar
-                CustomTabBarView(currentPage: $currentPage, showNewDeckModal: $showNewDeckModal)
+                CustomTabBarView(currentPage: $currentPage, showNewDeckModal: $showNewDeckModal, navId: $navStackID)
                 
                 ModalBackdrop(toggleModal: $showNewDeckModal)
                 NewDeckModal(showNewDeckModal: $showNewDeckModal)
@@ -45,6 +48,7 @@ struct MemoryOnTheGO: View {
             .frame(width: geo.size.width, height: geo.size.height)
         }
         .ignoresSafeArea(.keyboard)
+        
     }
         
 }

@@ -11,9 +11,7 @@ struct AboutView: View {
     var body: some View {
         ScrollView {
             Text("About")
-            Rectangle()
-                .fill(.red)
-                .frame(width: 300, height: 100)
+                .foregroundColor(.white)
         }
     }
 }

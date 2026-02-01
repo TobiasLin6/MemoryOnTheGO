@@ -75,6 +75,7 @@ struct NewDeckModal: View {
                                 name: deckName == "" ? "New Deck" : deckName,
                                 desc: deckDesc == "" ? "This is a new deck." : deckDesc,
                                 img: deckImg,
+                                cards: appleCards
                             )
                             
                             addDeck(newDeck, to: context)
@@ -115,7 +116,7 @@ struct NewDeckModal: View {
             withAnimation(.spring()) {
                 mainOffset = newVal ? 15.0 : 1000
             }
-            if newVal {
+            if !newVal {
                 isInputActive = false
             }
             deckName = ""

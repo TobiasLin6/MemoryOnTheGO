@@ -9,9 +9,10 @@ import SwiftUI
 import VisualEffectBlurView
 
 struct CustomTabBarView: View {
-    
+   
     @Binding var currentPage: String
     @Binding var showNewDeckModal: Bool
+    @Binding var navId: UUID
     
     var body: some View {
         VStack {
@@ -25,7 +26,7 @@ struct CustomTabBarView: View {
                 .mask {
                     Image("TabBarMask")
                         .resizable()
-                        .aspectRatio(contentMode: .fit)
+                        .aspectRatio(contentMode: .fill)
                 }
             
                 Image("TabBar")
@@ -36,12 +37,18 @@ struct CustomTabBarView: View {
                 
                 HStack {
                     Button {
+                        withAnimation(.easeOut) {
+                                navId = UUID()
+                            }
                         currentPage = "decks"
                     } label: {Label("Decks", systemImage: "rectangle.stack")}
                     
                     Spacer()
                     
                     Button {
+                        withAnimation(.easeOut) {
+                                navId = UUID()
+                            }
                         currentPage = "about"
                     } label: {Label("About", systemImage: "questionmark.circle")}
                 }
@@ -68,5 +75,5 @@ struct CustomTabBarView: View {
 }
 
 #Preview {
-    CustomTabBarView(currentPage: .constant("home"), showNewDeckModal: .constant(false))
+    CustomTabBarView(currentPage: .constant("home"), showNewDeckModal: .constant(false), navId:.constant(UUID()))
 }
