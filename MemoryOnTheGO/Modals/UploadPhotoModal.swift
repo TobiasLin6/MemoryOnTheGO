@@ -13,12 +13,15 @@ struct UploadPhotoModal: View {
     @Binding var showPhotoModal: Bool
     @Binding var photo: UniversalImage
     
-    @State private var photoTmp: UniversalImage = UniversalImage.symbol("photo")
+    @Binding var setPhotoTmp: UniversalImage
+    @State var photoTmp: UniversalImage = UniversalImage.symbol("photo")
     @State private var showingCamera = false
     @State private var selectedItem: PhotosPickerItem?
     
     @State private var mainOffset: CGFloat = 1000
     @State private var gestureOffset: CGFloat = 0
+    
+    @State var mode: String? = nil
     
     var body: some View {
         ZStack {
@@ -28,7 +31,7 @@ struct UploadPhotoModal: View {
                     DefaultModalBackground(height: Constants.uploadPhotoModalHeight)
                     VStack {
                         HStack {
-                            ModalTitle(title:"Upload Photo")
+                            ModalTitle(title: mode == "memory-palace" ? "Memory Palace" : "Upload Photo")
                                 .offset(x: 40)
                             Spacer()
                             CloseBtn(action: {showPhotoModal = false})
@@ -79,6 +82,7 @@ struct UploadPhotoModal: View {
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 200, height: 200)
                             .padding(10)
+                            .foregroundColor(Color("main-gray"))
                         
                         SubmitBtn(title: "Done", onTap: {
                             photo = photoTmp
@@ -112,17 +116,18 @@ struct UploadPhotoModal: View {
             withAnimation(.spring()){
                 mainOffset = showPhotoModal ? 15.0 : 1000
             }
+            photoTmp = setPhotoTmp
         }
         .onChange(of:showPhotoModal){ _, newVal in
             withAnimation(.spring()) {
                 mainOffset = newVal ? 15.0 : 1000
             }
-            photoTmp = UniversalImage.symbol("photo")
+            photoTmp = setPhotoTmp
         }
         
     }
 }
 
 #Preview {
-    UploadPhotoModal(showPhotoModal: .constant(true), photo: .constant(UniversalImage.symbol("photo")))
+    UploadPhotoModal(showPhotoModal: .constant(true), photo: .constant(UniversalImage.symbol("photo")), setPhotoTmp: .constant(UniversalImage.symbol("photo")))
 }

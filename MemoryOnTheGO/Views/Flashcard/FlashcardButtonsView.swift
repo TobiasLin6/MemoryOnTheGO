@@ -9,22 +9,34 @@ import SwiftUI
 
 struct FlashcardButtonsView: View {
     let deck: Deck
+    @Binding var showCardModal: Bool
+    @Binding var mode: String
+    
+    @Binding var showMemoryPalaceModal:Bool
     
     var body: some View {
         HStack {
             VStack{
-                Button {} label: {
+                Button {
+                    showCardModal = true
+                    mode = "add"
+                } label: {
                     Label("Add Card", systemImage: "plus.rectangle.on.rectangle")
                         .font(.custom(Constants.Fonts.regular, size: 18))
                 }
                 .padding(.bottom, 2)
-                Button {} label: {
+                Button {
+                    showCardModal = true
+                    mode = "edit"
+                } label: {
                     Label("Edit Card", systemImage: "square.and.pencil")
                         .font(.custom(Constants.Fonts.regular, size: 18))
                 }
             }
             Spacer()
-            Button {} label: {
+            Button {
+                showMemoryPalaceModal = true
+            } label: {
                 ZStack {
                     RoundedRectangle(cornerRadius: 15)
                         .fill(LinearGradient(gradient:
@@ -57,5 +69,5 @@ struct FlashcardButtonsView: View {
 }
 
 #Preview {
-    FlashcardButtonsView(deck: appleTriviaDeck)
+    FlashcardButtonsView(deck: appleTriviaDeck, showCardModal: .constant(false), mode: .constant("add"), showMemoryPalaceModal: .constant(false))
 }

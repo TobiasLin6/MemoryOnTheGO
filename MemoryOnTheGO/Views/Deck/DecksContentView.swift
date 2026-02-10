@@ -15,9 +15,9 @@ enum ScrollTarget: Hashable {
 }
 
 struct DecksContentView: View {
+    @Environment(AppState.self) var appState
     
     @Binding var lockModal: Bool
-    @Binding var currentPage: String
     @State var currentChoice: String = "all"
     @State private var scrollID: ScrollTarget?
     @State private var scrollDisabled: Bool = true
@@ -30,6 +30,11 @@ struct DecksContentView: View {
         deck.deletedAt == nil && deck.pinned == true
     }, sort: \.sortOrder) private var pinnedDecks: [Deck]
     
+    @Binding var showDeckModal: Bool
+    @Binding var mode: String
+    
+    @Binding var bindingDeck: Deck
+    
     var body: some View {
         ScrollView {
             
@@ -40,7 +45,7 @@ struct DecksContentView: View {
                     .scrollPosition(id: $scrollID, anchor: .top)
                 // TODO: Add content
                 ForEach(currentChoice == "pinned" ? pinnedDecks: allDecks) {deck in
-                    DeckItemView(deck: deck)
+                    DeckItemView(deck: deck, bindingDeck: $bindingDeck, showDeckModal: $showDeckModal, mode: $mode)
                         .id(ScrollTarget.deck(deck.id))
                     }
                 
@@ -58,7 +63,7 @@ struct DecksContentView: View {
         .onChange(of: scrollID) { _, newValue in
             lockModal = newValue != ScrollTarget.top
         }
-        .onChange(of: currentPage) { _, newValue in
+        .onChange(of: appState.currentPage) { _, newValue in
             scrollID = ScrollTarget.top
             scrollDisabled = newValue == "home"
         }
@@ -69,5 +74,6 @@ struct DecksContentView: View {
 
 
 #Preview {
-    DecksContentView(lockModal: .constant(false), currentPage: .constant("home"))
+    DecksContentView(lockModal: .constant(false), showDeckModal: .constant(false), mode: .constant("add"), bindingDeck: .constant(appleTriviaDeck))
+        .environment(AppState())
 }

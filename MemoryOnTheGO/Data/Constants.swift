@@ -20,8 +20,12 @@ enum Constants {
     static let deckNameMaxChars: Int = 25
     static let deckDescMaxChars: Int = 100
     
-    static let createDeckModalHeight: CGFloat = 800
+    static let createDeckModalHeight: CGFloat = 790
     static let uploadPhotoModalHeight: CGFloat = 600
+    
+    static let createCardModalHeight: CGFloat = 850
+    static let cardQuestionMaxChars: Int = 125
+    static let cardAnswerMaxChars: Int = 125
 
     
     enum Fonts {

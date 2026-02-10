@@ -14,7 +14,7 @@ class FlashCard: Identifiable, CustomStringConvertible{
     var question: String
     var answer: String
     var skill: Int  // 0-5 where 5 is mastered and 0 is just started learning
-    var sound: String?
+    var sortOrder: Int
     var searchText: String
     
     var imageRawValue: String
@@ -29,26 +29,18 @@ class FlashCard: Identifiable, CustomStringConvertible{
         question: String,
         answer: String,
         img: UniversalImage = .symbol("photo"),
-        sound: String? = nil,
+        sortOrder: Int = 0
     ) {
         self.question = question
         self.answer = answer
         self.skill = 0
+        self.sortOrder = sortOrder
         self.imageRawValue = img.encode()
-        self.sound = sound
         self.searchText = "\(question) \(answer)"
     }
     
     var description: String {
-        return "Question: \(question), Answer: \(answer) | Skill: \(skill), Image \(img.id), Sound: \(sound ?? "None")"
-    }
-    
-    nonisolated func export() -> FlashCardExport {
-        FlashCardExport(
-            id: id,
-            question: question,
-            answer: answer,
-        )
+        return "Question: \(question), Answer: \(answer) | Skill: \(skill), Image \(img.id) | SortOrder: \(sortOrder)"
     }
     
 }
@@ -97,70 +89,54 @@ class Deck: Identifiable, CustomStringConvertible {
         return "Name: \(name), Description \(desc), Sort Order: \(sortOrder), Pinned: \(pinned), Image: \(img.id), DeletedAt: \(deletedAt?.description ?? "None")"
     }
     
-    nonisolated func export() -> DeckExport {
-        DeckExport (
-            id: id,
-            name: name,
-            cards: cards.map{$0.export()}
-        )
-    }
-    
-    
 }
-
-
-struct FlashCardExport: Codable {
-    let id: UUID
-    let question: String
-    let answer: String
-}
-
-struct DeckExport: Codable {
-    var id: UUID
-    var name: String
-    var cards: [FlashCardExport]
-}
-
-
-
-
 
 // For previews
+@MainActor
 let appleCards = [
     FlashCard(
         question: "In what year was Apple Computer Company founded?",
-        answer: "1976"
+        answer: "1976",
+        sortOrder: 0
     ),
     FlashCard(
         question: "Who was the third co-founder of Apple alongside Steve Jobs and Steve Wozniak?",
-        answer: "Ronald Wayne"
+        answer: "Ronald Wayne",
+        sortOrder: 1
     ),
     FlashCard(
         question: "What was the first product Apple ever released?",
-        answer: "The Apple I (a motherboard kit)"
+        answer: "The Apple I (a motherboard kit)",
+        sortOrder: 2
     ),
     FlashCard(
         question: "Which Newton-inspired image was featured in Apple's first official logo?",
-        answer: "Isaac Newton sitting under an apple tree"
+        answer: "Isaac Newton sitting under an apple tree",
+        sortOrder: 3
     ),
     FlashCard(
         question: "In 1984, Apple introduced the Macintosh with a famous Super Bowl ad. Who directed it?",
-        answer: "Ridley Scott"
+        answer: "Ridley Scott",
+        sortOrder: 4
     ),
     FlashCard(
         question: "What was the name of the handheld PDA Apple released in 1993?",
-        answer: "The Newton MessagePad"
+        answer: "The Newton MessagePad",
+        sortOrder: 5
     ),
     FlashCard(
         question: "What year was the original iPhone announced by Steve Jobs?",
-        answer: "2007"
+        answer: "2007",
+        sortOrder: 6
     ),
     FlashCard(
         question: "What does the 'i' in iMac originally stand for, according to Steve Jobs?",
-        answer: "Internet (though it also meant individual, instruct, inform, and inspire)"
+        answer: "Internet (though it also meant individual, instruct, inform, and inspire)",
+        sortOrder: 7
     )
 ]
 
+@MainActor
 let appleTriviaDeck = Deck(
     name: "Apple History & Lore",
     desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",

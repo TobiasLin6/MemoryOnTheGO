@@ -9,6 +9,12 @@ import SwiftUI
 
 struct FlashcardListCard: View {
     let card: FlashCard
+    
+    @Binding var showCardModal: Bool
+    @Binding var mode: String
+    @Binding var listIdx: Int
+    let idx: Int
+    
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 12)
@@ -18,7 +24,11 @@ struct FlashcardListCard: View {
             VStack {
                 HStack {
                     Spacer()
-                    Button{} label: {
+                    Button{
+                        mode = "edit-list"
+                        listIdx = idx
+                        showCardModal = true
+                    } label: {
                         Label("Edit Card", systemImage: "square.and.pencil")
                             .font(.custom(Constants.Fonts.regular, size: 16))
                             .foregroundColor(Color("main-gray"))
@@ -31,20 +41,12 @@ struct FlashcardListCard: View {
             
             
             VStack {
-                Button {} label: {
-                    UniversalImageView(source: card.img)
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 75, height: 75)
-                        .foregroundColor(Color("main-gray"))
-                        .padding(.top, 5)
-                }
-                
-                Button {} label: {
-                    Label("Play Audio", systemImage: "speaker.wave.3")
-                        .foregroundColor(Color(white: 0.8))
-                    
-                }
-                .padding(.bottom, 10)
+                UniversalImageView(source: card.img)
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 75, height: 75)
+                    .foregroundColor(Color("main-gray"))
+                    .padding(.top, 5)
+                    .padding(.bottom, 10)
                 Text(card.question)
                     .font(.custom(Constants.Fonts.regular, size: 22))
                     .multilineTextAlignment(.center)
@@ -70,7 +72,11 @@ struct FlashcardListCard: View {
             
             VStack {
                 Spacer()
-                Button {} label: {
+                Button {
+                    mode = "add-list"
+                    showCardModal = true
+                    listIdx = idx
+                } label: {
                     ZStack {
                         Circle()
                             .fill(.white)
@@ -94,5 +100,5 @@ struct FlashcardListCard: View {
 }
 
 #Preview {
-    FlashcardListCard(card: appleCards[0])
+    FlashcardListCard(card: appleCards[0], showCardModal: .constant(false), mode: .constant("add"), listIdx: .constant(0), idx: 0)
 }

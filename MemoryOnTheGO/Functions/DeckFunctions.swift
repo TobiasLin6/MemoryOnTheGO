@@ -47,6 +47,7 @@ func updateDeck(_ oldDeck: Deck, to newDeck: Deck, in context: ModelContext ) {
     
 }
 
+
 func softDeleteDeck(_ deck: Deck, from context: ModelContext) {
     if deck.deletedAt == nil {
         deck.deletedAt = Date()
@@ -177,12 +178,4 @@ func moveDeck(_ deck: Deck, to destination: Int, in context: ModelContext) {
     } catch {
         print("moveDeck failed: \(error)")
     }
-    
-    
-    
-}
-
-func exportDecks(_ decks: [Deck], in context: ModelContext) {
-    print("TEMP: Decks Exported Successfully")
-    // TODO: Export decks array to JSON
 }

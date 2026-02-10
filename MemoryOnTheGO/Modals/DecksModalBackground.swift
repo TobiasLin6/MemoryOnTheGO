@@ -10,8 +10,6 @@ import VisualEffectBlurView
 
 struct DecksModalBackground: View {
     
-    @Binding var currentPage: String
-    
     var body: some View {
         RoundedRectangle(cornerRadius: 25)
             .fill(
@@ -58,5 +56,5 @@ struct DecksModalBackground: View {
 }
 
 #Preview {
-    DecksModalBackground(currentPage: .constant("home"))
+    DecksModalBackground()
 }

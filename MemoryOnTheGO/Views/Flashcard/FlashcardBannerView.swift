@@ -8,7 +8,16 @@
 import SwiftUI
 
 struct FlashcardBannerView: View {
+    @Environment(\.modelContext) private var context
+    @Environment(AppState.self) var appState
+    
     let deck: Deck
+    @Binding var showCardModal: Bool
+    @State private var showingAlert: Bool = false
+    
+    @Binding var showCreateDeckModal: Bool
+    @Binding var bindingDeck: Deck
+    @Binding var deckMode: String
     
     var body: some View {
         VStack {
@@ -40,10 +49,10 @@ struct FlashcardBannerView: View {
                         VStack(alignment: .leading){
                             VStack (alignment: .leading) {
                                 Text(deck.name)
-                                    .font(.custom(Constants.Fonts.regular, size: 28))
+                                    .font(.custom(Constants.Fonts.regular, size: 25))
                                     .foregroundColor(Color("main-gray"))
                                     .frame(width: 175, height: 70, alignment: .leading)
-                                    .offset(y: 33)
+                                    .offset(y: 36)
                                 VStack{
                                     Text(deck.desc)
                                         .font(.custom(Constants.Fonts.regular, size: 15))
@@ -66,7 +75,9 @@ struct FlashcardBannerView: View {
                     HStack{
                         Spacer()
                             Button {
-                                
+                                bindingDeck = deck
+                                deckMode = "edit"
+                                showCreateDeckModal = true
                             } label: {
                                 Image(systemName: "square.and.pencil")
                                     .resizable()
@@ -75,7 +86,11 @@ struct FlashcardBannerView: View {
                             }
                         
                             Button {
-                                
+                                if deck.pinned {
+                                    unpinDeck(deck, in: context)
+                                } else {
+                                    pinDeck(deck, in: context)
+                                }
                             } label: {
                                 Image(systemName: deck.pinned ? "pin.slash" : "pin")
                                     .resizable()
@@ -85,12 +100,27 @@ struct FlashcardBannerView: View {
                             }
                             .padding(.horizontal, 10)
                             Button {
-                                
+                                showingAlert = true
                             } label: {
                                 Image(systemName: "trash")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
                                     .frame(width: 23, height: 23)
+                            }
+                            .confirmationDialog(
+                                "Are you sure?",
+                                isPresented: $showingAlert,
+                                titleVisibility: .visible
+                            ) {
+                                Button("Delete", role: .destructive) {
+                                    withAnimation(.easeOut) {
+                                        appState.navID = UUID()
+                                        }
+                                    appState.currentPage = "decks"
+                                    softDeleteDeck(deck, from: context)
+                                }
+                            } message: {
+                                Text("You are about to delete this deck.")
                             }
                         
                     }
@@ -103,5 +133,6 @@ struct FlashcardBannerView: View {
 }
 
 #Preview {
-    FlashcardBannerView(deck: appleTriviaDeck)
+    FlashcardBannerView(deck: appleTriviaDeck, showCardModal: .constant(true), showCreateDeckModal: .constant(false), bindingDeck: .constant(appleTriviaDeck), deckMode: .constant("edit"))
+        .environment(AppState())
 }

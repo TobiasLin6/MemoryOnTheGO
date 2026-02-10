@@ -16,6 +16,10 @@ struct FlashcardCardView: View {
     @State var xOffset: CGFloat = 0
     @State var yOffset: CGFloat = 0
     
+    var sortedCards: [FlashCard] {
+        deck.cards.sorted { $0.sortOrder < $1.sortOrder }
+    }
+    
     var body: some View {
         ZStack {
             // MARK: Swipe Actions
@@ -117,14 +121,14 @@ struct FlashcardCardView: View {
                 // MARK: Content
                 if deck.cards.count > 0 {
                     if cardFront {
-                        Text(deck.cards[flashcardIdx].question)
+                        Text(sortedCards[flashcardIdx].question)
                             .font(.custom(Constants.Fonts.regular, size: 25))
                             .multilineTextAlignment(.center)
                             .padding(43)
                             .offset(y:17)
                             .foregroundColor(.white)
                     } else {
-                        Text(deck.cards[flashcardIdx].answer)
+                        Text(sortedCards[flashcardIdx].answer)
                             .font(.custom(Constants.Fonts.regular, size: 25))
                             .multilineTextAlignment(.center)
                             .padding(43)

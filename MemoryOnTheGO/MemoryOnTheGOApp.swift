@@ -11,9 +11,11 @@ import SwiftData
 
 @main
 struct MemoryOnTheGOApp: App {
+    @State private var appState = AppState()
     var body: some Scene {
         WindowGroup {
             MemoryOnTheGO()
+                .environment(appState)
         }
         .modelContainer(for: [FlashCard.self, Deck.self])
     }

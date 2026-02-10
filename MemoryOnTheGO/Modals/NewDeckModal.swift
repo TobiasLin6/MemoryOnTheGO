@@ -10,6 +10,8 @@ import SwiftUI
 struct NewDeckModal: View {
     @Environment(\.modelContext) private var context
     
+    var deck: Deck?
+    
     @Binding var showNewDeckModal: Bool
     
     @State private var nameCharacters = 0
@@ -24,6 +26,8 @@ struct NewDeckModal: View {
     @State var showPhotoModal: Bool = false
     
     @FocusState private var isInputActive: Bool
+    
+    @State var mode: String
     
     var body: some View {
         
@@ -41,7 +45,7 @@ struct NewDeckModal: View {
                     
                     VStack {
                         HStack (alignment: .center) {
-                            ModalTitle(title: "Create Deck")
+                            ModalTitle(title: mode == "add" ? "Create Deck" : "Edit Deck")
                                 .offset(x: 35)
                             Spacer()
                             CloseBtn(action: {showNewDeckModal = false})
@@ -69,8 +73,7 @@ struct NewDeckModal: View {
                             .padding(.top, 20)
                         GhostBtn(title: "Change Photo") {showPhotoModal = true}
                             .padding(.bottom, 20)
-                        SubmitBtn(title: "Create Deck") {
-                            
+                        SubmitBtn(title: mode == "add" ? "Create Deck" : "Confirm Edits") {
                             let newDeck = Deck(
                                 name: deckName == "" ? "New Deck" : deckName,
                                 desc: deckDesc == "" ? "This is a new deck." : deckDesc,
@@ -78,8 +81,17 @@ struct NewDeckModal: View {
                                 cards: appleCards
                             )
                             
-                            addDeck(newDeck, to: context)
-                            showNewDeckModal = false
+                            if mode == "add"{
+                                addDeck(newDeck, to: context)
+                                showNewDeckModal = false
+                            } else {
+                                if let oldDeck = deck {
+                                    updateDeck(oldDeck, to: newDeck, in: context)
+                                    showNewDeckModal = false
+                                }
+                                
+                            }
+                            
                         }
                             .padding(.bottom, 30)
                     }
@@ -89,7 +101,7 @@ struct NewDeckModal: View {
             .ignoresSafeArea()
             
             ModalBackdrop(toggleModal: $showPhotoModal)
-            UploadPhotoModal(showPhotoModal: $showPhotoModal, photo: $deckImg)
+            UploadPhotoModal(showPhotoModal: $showPhotoModal, photo: $deckImg, setPhotoTmp: .constant(UniversalImage.symbol("photo")))
         }
         .gesture(DragGesture(coordinateSpace: .global)
             .onChanged { value in
@@ -108,20 +120,40 @@ struct NewDeckModal: View {
         )
         .offset(y: mainOffset + gestureOffset)
         .onAppear {
+            
+            if let editDeck = deck {
+                deckName = editDeck.name
+                deckDesc = editDeck.desc
+                deckImg = editDeck.img
+            } else {
+                deckName = ""
+                deckDesc = ""
+                deckImg = UniversalImage.symbol("photo")
+            }
+            
+            
             withAnimation(.spring()){
                 mainOffset = showNewDeckModal ? 15.0 : 1000
             }
         }
         .onChange(of:showNewDeckModal){ _, newVal in
+            
+            if let editDeck = deck {
+                deckName = editDeck.name
+                deckDesc = editDeck.desc
+                deckImg = editDeck.img
+            } else {
+                deckName = ""
+                deckDesc = ""
+                deckImg = UniversalImage.symbol("photo")
+            }
+            
             withAnimation(.spring()) {
                 mainOffset = newVal ? 15.0 : 1000
             }
             if !newVal {
                 isInputActive = false
             }
-            deckName = ""
-            deckDesc = ""
-            deckImg = UniversalImage.symbol("photo")
         }
         .ignoresSafeArea()
         
@@ -130,7 +162,7 @@ struct NewDeckModal: View {
 }
 
 #Preview {
-    NewDeckModal(showNewDeckModal: .constant(true))
+    NewDeckModal(deck: appleTriviaDeck, showNewDeckModal: .constant(true), mode: "add")
 }
 
 

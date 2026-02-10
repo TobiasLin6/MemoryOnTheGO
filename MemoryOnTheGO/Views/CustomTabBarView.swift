@@ -10,9 +10,9 @@ import VisualEffectBlurView
 
 struct CustomTabBarView: View {
    
-    @Binding var currentPage: String
     @Binding var showNewDeckModal: Bool
-    @Binding var navId: UUID
+    @Environment(AppState.self) var appState
+    @Binding var mode: String
     
     var body: some View {
         VStack {
@@ -38,18 +38,18 @@ struct CustomTabBarView: View {
                 HStack {
                     Button {
                         withAnimation(.easeOut) {
-                                navId = UUID()
+                            appState.navID = UUID()
                             }
-                        currentPage = "decks"
+                        appState.currentPage = "decks"
                     } label: {Label("Decks", systemImage: "rectangle.stack")}
                     
                     Spacer()
                     
                     Button {
                         withAnimation(.easeOut) {
-                                navId = UUID()
+                            appState.navID = UUID()
                             }
-                        currentPage = "about"
+                        appState.currentPage = "about"
                     } label: {Label("About", systemImage: "questionmark.circle")}
                 }
                 .foregroundColor(Color("main-gray"))
@@ -57,6 +57,7 @@ struct CustomTabBarView: View {
                 .offset(y: 10)
                 
                 Button {
+                    mode = "add"
                     showNewDeckModal = true
                 } label: {
                     Image("TabBar-Button")
@@ -75,5 +76,6 @@ struct CustomTabBarView: View {
 }
 
 #Preview {
-    CustomTabBarView(currentPage: .constant("home"), showNewDeckModal: .constant(false), navId:.constant(UUID()))
+    CustomTabBarView(showNewDeckModal: .constant(false), mode: .constant("add"))
+        .environment(AppState())
 }

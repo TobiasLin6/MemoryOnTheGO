@@ -11,10 +11,13 @@ import UIKit
 
 struct HomeView: View {
     
-    @Binding var currentPage: String
-    
     let screenWidth = UIScreen.main.bounds.width
     let screenHeight = UIScreen.main.bounds.height
+    
+    @Binding var showDeckModal: Bool
+    @Binding var mode: String
+
+    @Binding var bindingDeck: Deck
     
     var body: some View {
             ScrollView {
@@ -26,7 +29,7 @@ struct HomeView: View {
                         .ignoresSafeArea()
                     
                     // MARK: Tutorial
-                    TutorialBtn(currentPage: $currentPage)
+                    TutorialBtn()
                     
                     // MARK: Settings
                     HStack {
@@ -47,7 +50,7 @@ struct HomeView: View {
                     .padding(.horizontal, 30)
 
                     // MARK: Decks Modal
-                    DecksView(currentPage: $currentPage)
+                    DecksView(showDeckModal: $showDeckModal, mode: $mode, bindingDeck: $bindingDeck)
                     
                     
                 }
@@ -60,5 +63,6 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView(currentPage: .constant("home"))
+    HomeView(showDeckModal: .constant(false), mode: .constant("add"), bindingDeck: .constant(appleTriviaDeck))
+        .environment(AppState())
 }

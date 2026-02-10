@@ -10,21 +10,27 @@ import SwiftData
 import VisualEffectBlurView
 
 struct DecksView: View {
-    @Binding var currentPage: String
+    @Environment(AppState.self) var appState
     
     @State private var mainOffset: CGFloat = Constants.lowModalOffset
     @State private var dragOffset: CGFloat = 0
     @State private var lockModal: Bool = false
     
+    @Binding var showDeckModal: Bool
+    @Binding var mode: String
+    
+    @Binding var bindingDeck: Deck
+
+    
     var body: some View {
         ZStack {
             
             // MARK: Background
-            DecksModalBackground(currentPage: $currentPage)
+            DecksModalBackground()
             
             // MARK: Content
             ZStack {
-                DecksContentView(lockModal: $lockModal, currentPage: $currentPage)
+                DecksContentView(lockModal: $lockModal, showDeckModal: $showDeckModal, mode: $mode, bindingDeck: $bindingDeck)
                 
                 // MARK: Search Bar
             }
@@ -38,7 +44,7 @@ struct DecksView: View {
                     let translation = value.translation.height
                     
                     if !lockModal {
-                        if currentPage == "home" {
+                        if appState.currentPage == "home" {
                             dragOffset = max(-520, min(30, translation))
                         } else {
                             dragOffset = max(-30, min(520, translation))
@@ -48,10 +54,10 @@ struct DecksView: View {
                 .onEnded { value in
                     withAnimation(.spring()) {
                         if dragOffset > Constants.dragDismissThreshold {
-                            currentPage = "home"
+                            appState.currentPage = "home"
                             mainOffset = Constants.lowModalOffset
                         } else if dragOffset < (-1 * Constants.dragDismissThreshold) {
-                            currentPage = "decks"
+                            appState.currentPage = "decks"
                             mainOffset = Constants.highModalOffset
                         }
                         dragOffset = 0
@@ -59,9 +65,9 @@ struct DecksView: View {
                 }
         )
         .onAppear {
-            mainOffset = (currentPage == "home") ? Constants.lowModalOffset : Constants.highModalOffset
+            mainOffset = (appState.currentPage == "home") ? Constants.lowModalOffset : Constants.highModalOffset
         }
-        .onChange(of: currentPage) { _, newVal in
+        .onChange(of: appState.currentPage) { _, newVal in
             mainOffset = (newVal == "home") ? Constants.lowModalOffset : Constants.highModalOffset
         }
         
@@ -72,5 +78,6 @@ struct DecksView: View {
 
 
 #Preview {
-    DecksView(currentPage: .constant("home"))
+    DecksView(showDeckModal: .constant(false), mode: .constant("add"), bindingDeck: .constant(appleTriviaDeck))
+        .environment(AppState())
 }

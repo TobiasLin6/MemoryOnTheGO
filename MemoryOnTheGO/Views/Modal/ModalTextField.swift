@@ -54,6 +54,12 @@ struct ModalTextField: View {
                 text = String(newVal.prefix(maxChars))
             }
         }
+        .onAppear {
+            charCount = text.count
+            if charCount >= maxChars {
+                text = String(text.prefix(maxChars))
+            }
+        }
         
             
     }

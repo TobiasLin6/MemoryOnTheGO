@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum UniversalImage: Identifiable, Codable, Sendable {
+enum UniversalImage: Identifiable, Codable, Sendable, Equatable {
     case asset(String)
     case imageData(Data)
     case symbol(String)

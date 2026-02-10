@@ -7,26 +7,20 @@
 
 import SwiftUI
 
-struct VerticalLabelStyle: LabelStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        VStack(alignment: .center, spacing: 4) {
-            configuration.icon
-            configuration.title
-        }
-    }
-}
-
 struct DeckItemView: View {
     @Environment(\.modelContext) private var context
     let deck: Deck
+    @Binding var bindingDeck: Deck
     
     @State private var offset: CGFloat = 0
     let leadingWidth: CGFloat = 105
     let trailingWidth: CGFloat = 200
+    @Binding var showDeckModal: Bool
+    @Binding var mode: String
 
     var body: some View {
         
-        NavigationLink {FlashcardView(deck: deck)} label: {
+        NavigationLink {FlashcardView(deck: deck, showCreateDeckModal: $showDeckModal, bindingDeck: $bindingDeck, deckMode: $mode)} label: {
             ZStack {
                 // MARK: Swipe Right
                 HStack {
@@ -85,6 +79,9 @@ struct DeckItemView: View {
                     // Edit Button
                     Button() {
                         // TODO: Add edit functionality
+                        showDeckModal = true
+                        mode = "edit"
+                        bindingDeck = deck
                         withAnimation { offset = 0 }
                     } label: {
                         VStack(spacing: 4) {
@@ -192,7 +189,7 @@ struct DeckItemView: View {
 
 #Preview {
     VStack(alignment: .leading, spacing: 12) {
-        DeckItemView(deck: appleTriviaDeck)
+        DeckItemView(deck: appleTriviaDeck, bindingDeck: .constant(appleTriviaDeck), showDeckModal: .constant(false), mode: .constant("add"))
     }
     .padding()
 }

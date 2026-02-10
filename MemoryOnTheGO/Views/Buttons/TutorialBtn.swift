@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TutorialBtn: View {
     
-    @Binding var currentPage: String
+    @Environment(AppState.self) var appState
     
     var body: some View {
         HStack {
@@ -60,5 +60,6 @@ struct TutorialBtn: View {
 }
 
 #Preview {
-    TutorialBtn(currentPage: .constant("home"))
+    TutorialBtn()
+        .environment(AppState())
 }

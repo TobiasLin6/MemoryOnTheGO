@@ -10,11 +10,15 @@ import SwiftUI
 struct MemoryOnTheGO: View {
     
     @State var devMode: Bool = true
-    @State var currentPage: String = "home"
     @State var showNewDeckModal: Bool = false
     @State var tutorialStage: Int = -1  // -1 = tutorial not enabled
     
-    @State var navStackID = UUID()
+    @Environment(AppState.self) var appState
+    @Environment(\.modelContext) var context
+    
+    @State var mode: String = "add"
+    
+    @State var bindingDeck: Deck = Deck(name: "New Deck", desc: "This is a new deck")
     
     var body: some View {
         GeometryReader { geo in
@@ -27,22 +31,29 @@ struct MemoryOnTheGO: View {
                 .ignoresSafeArea()
                 
                 // MARK: Content
-                
                 NavigationStack {
-                    if currentPage == "home" || currentPage == "decks" {
-                        HomeView(currentPage: $currentPage)
+                    if appState.currentPage == "home" || appState.currentPage == "decks" {
+                        HomeView(showDeckModal: $showNewDeckModal, mode: $mode, bindingDeck: $bindingDeck)
                         
-                    } else if currentPage == "about" {
+                    } else if appState.currentPage == "about" {
                         AboutView()
                     }
                 }
-                .id(navStackID)
+                .id(appState.navID)
                 
                 // MARK: Tab Bar
-                CustomTabBarView(currentPage: $currentPage, showNewDeckModal: $showNewDeckModal, navId: $navStackID)
+                if !appState.hideTabBar{
+                    CustomTabBarView(showNewDeckModal: $showNewDeckModal, mode: $mode)
+                }
+                
                 
                 ModalBackdrop(toggleModal: $showNewDeckModal)
-                NewDeckModal(showNewDeckModal: $showNewDeckModal)
+                if mode == "add" {
+                    NewDeckModal(showNewDeckModal: $showNewDeckModal, mode: "add")
+                } else {
+                    NewDeckModal(deck: bindingDeck, showNewDeckModal: $showNewDeckModal, mode: "edit")
+                }
+                
                 
             }
             .frame(width: geo.size.width, height: geo.size.height)
@@ -55,4 +66,5 @@ struct MemoryOnTheGO: View {
 
 #Preview {
     MemoryOnTheGO()
+        .environment(AppState())
 }

@@ -18,4 +18,5 @@ struct AboutView: View {
 
 #Preview {
     AboutView()
+        .environment(AppState())
 }
