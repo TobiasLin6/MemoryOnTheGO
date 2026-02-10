@@ -5,7 +5,6 @@ Memory On The GO is a Swift-based flashcard application designed to supercharge 
 - **Flashcards App**: Simple, intuitive memory and quiz interface.
 - **Notification System**: Periodic reminders to solidify memory through active recall.
 - **Memory Palace Integration**: Tools to help map digital cards to physical locations using the Method of Loci.
-- **Acoustic Encoding**: Features designed to leverage sound patterns and phonetic associations for better information retrieval.
 
 ### 🛠 Tech Stack
 - **Language**: Swift / Swift
