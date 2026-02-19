@@ -23,6 +23,8 @@ struct UploadPhotoModal: View {
     
     @State var mode: String? = nil
     
+    @State var showPresetLibrary: Bool = false
+    
     var body: some View {
         ZStack {
             VStack {
@@ -75,7 +77,7 @@ struct UploadPhotoModal: View {
                         }
                         .padding(.bottom, 10)
                         GhostBtn(title: "Pick from Library", horizPadding: 100, onTap: {
-                            // TODO: Add pick from library
+                            showPresetLibrary = true
                         })
                         
                         UniversalImageView(source: photoTmp)
@@ -95,6 +97,10 @@ struct UploadPhotoModal: View {
             }
             .ignoresSafeArea()
             
+        }
+        .sheet(isPresented: $showPresetLibrary) {
+            PresetLibrary(photoTmp: $photoTmp, showModal: $showPresetLibrary)
+                .presentationDragIndicator(.visible)
         }
         .gesture(DragGesture(coordinateSpace: .global)
             .onChanged { value in
@@ -131,3 +137,4 @@ struct UploadPhotoModal: View {
 #Preview {
     UploadPhotoModal(showPhotoModal: .constant(true), photo: .constant(UniversalImage.symbol("photo")), setPhotoTmp: .constant(UniversalImage.symbol("photo")))
 }
+

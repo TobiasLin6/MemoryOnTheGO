@@ -69,18 +69,6 @@ struct DecksNavigationBar: View {
                     
                 }
             }
-            HStack {
-                Spacer()
-                Button {
-                    // TODO: Add functionality
-                } label: {
-                    Image(systemName: "ellipsis.circle")
-                        .resizable()
-                        .frame(width: 26, height: 26)
-                        .foregroundColor(Color("deck-itm-pin"))
-                }
-            }
-            .offset(x: -10, y: -32)
         }
     }
 }

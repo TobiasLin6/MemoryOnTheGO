@@ -8,12 +8,16 @@
 import SwiftUI
 
 struct FlashcardListCard: View {
+    @Environment(\.modelContext) private var context
     let card: FlashCard
+    @Binding var deck: Deck
     
     @Binding var showCardModal: Bool
     @Binding var mode: String
     @Binding var listIdx: Int
     let idx: Int
+    
+    @State var showingAlert: Bool = false
     
     var body: some View {
         ZStack {
@@ -23,6 +27,26 @@ struct FlashcardListCard: View {
             
             VStack {
                 HStack {
+                    Button{
+                        showingAlert = true
+                    } label: {
+                        Image(systemName: "trash")
+                            .foregroundColor(Color("main-gray"))
+                    }
+                    .confirmationDialog(
+                            "Are you sure?",
+                            isPresented: $showingAlert,
+                            titleVisibility: .visible,
+                            actions: {
+                                Button("Delete", role: .destructive) {
+                                    removeCard(at: idx, from: deck, in: context)
+                                    
+                                }
+                            },
+                            message: {
+                                Text("You are about to permanantly delete this card.")
+                            }
+                        )
                     Spacer()
                     Button{
                         mode = "edit-list"
@@ -100,5 +124,5 @@ struct FlashcardListCard: View {
 }
 
 #Preview {
-    FlashcardListCard(card: appleCards[0], showCardModal: .constant(false), mode: .constant("add"), listIdx: .constant(0), idx: 0)
+    FlashcardListCard(card: appleCards[0], deck: .constant(appleTriviaDeck), showCardModal: .constant(false), mode: .constant("add"), listIdx: .constant(0), idx: 0)
 }

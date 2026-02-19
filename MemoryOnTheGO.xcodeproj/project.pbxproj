@@ -14,22 +14,9 @@
 		79B980432F19ADD4001E3D61 /* MemoryOnTheGO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MemoryOnTheGO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		796543DB2F1AD00C0062B65A /* Exceptions for "MemoryOnTheGO" folder in "MemoryOnTheGO" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 79B980422F19ADD4001E3D61 /* MemoryOnTheGO */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		79B980442F19ADD4001E3D61 /* MemoryOnTheGO */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				796543DB2F1AD00C0062B65A /* Exceptions for "MemoryOnTheGO" folder in "MemoryOnTheGO" target */,
-			);
 			path = MemoryOnTheGO;
 			sourceTree = "<group>";
 		};
@@ -160,7 +147,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = MemoryOnTheGO/Info.plist;
+				INFOPLIST_FILE = "";
 				INFOPLIST_KEY_NSCameraUsageDescription = "We need your camera to take a custom photo.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need access to your library to upload a photo.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -214,7 +201,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = MemoryOnTheGO/Info.plist;
+				INFOPLIST_FILE = "";
 				INFOPLIST_KEY_NSCameraUsageDescription = "We need your camera to take a custom photo.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need access to your library to upload a photo.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

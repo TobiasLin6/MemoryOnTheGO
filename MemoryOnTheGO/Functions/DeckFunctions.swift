@@ -179,3 +179,42 @@ func moveDeck(_ deck: Deck, to destination: Int, in context: ModelContext) {
         print("moveDeck failed: \(error)")
     }
 }
+
+func removeCard(at index: Int, from deck: Deck, in context: ModelContext) {
+
+    let updatedDeck = deck
+    var cards = deck.cards.sorted { $0.sortOrder < $1.sortOrder }
+    
+    guard cards.indices.contains(index) else {
+        print("removeCard failed: Index \(index) out of bounds")
+        return
+    }
+    
+    let removedCard = cards.remove(at: index)
+    
+    for (newIndex, card) in cards.enumerated() {
+        card.sortOrder = newIndex
+    }
+    
+    context.delete(removedCard)
+    
+    updatedDeck.cards = cards
+    updateDeck(deck, to: updatedDeck, in: context)
+}
+
+func seedInitialDecks(context: ModelContext) {
+    let descriptor = FetchDescriptor<Deck>()
+    let existingCount = (try? context.fetchCount(descriptor)) ?? 0
+    
+    if existingCount == 0 {
+        for deck in DeckConstants.defaultDecks {
+            addDeck(deck, to: context)
+        }
+        
+        do {
+            try context.save()
+        } catch {
+            print("Failed to seed decks: \(error)")
+        }
+    }
+}

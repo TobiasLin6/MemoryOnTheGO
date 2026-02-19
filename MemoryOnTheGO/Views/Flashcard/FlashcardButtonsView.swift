@@ -14,6 +14,8 @@ struct FlashcardButtonsView: View {
     
     @Binding var showMemoryPalaceModal:Bool
     
+    @Binding var btnDisabled:Bool
+    
     var body: some View {
         HStack {
             VStack{
@@ -31,7 +33,8 @@ struct FlashcardButtonsView: View {
                 } label: {
                     Label("Edit Card", systemImage: "square.and.pencil")
                         .font(.custom(Constants.Fonts.regular, size: 18))
-                }
+                        .opacity(btnDisabled ? 0.4 : 1)
+                }.disabled(btnDisabled)
             }
             Spacer()
             Button {
@@ -59,8 +62,8 @@ struct FlashcardButtonsView: View {
                     .padding(.horizontal, 20)
                         
                 }
-                
-            }
+                .opacity(btnDisabled ? 0.4 : 1)
+            }.disabled(btnDisabled)
         }
         .padding()
         .padding(.top, 10)
@@ -69,5 +72,5 @@ struct FlashcardButtonsView: View {
 }
 
 #Preview {
-    FlashcardButtonsView(deck: appleTriviaDeck, showCardModal: .constant(false), mode: .constant("add"), showMemoryPalaceModal: .constant(false))
+    FlashcardButtonsView(deck: appleTriviaDeck, showCardModal: .constant(false), mode: .constant("add"), showMemoryPalaceModal: .constant(false), btnDisabled: .constant(false))
 }

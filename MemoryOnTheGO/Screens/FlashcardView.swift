@@ -18,7 +18,9 @@ struct FlashcardView: View {
     @State var showCardModal = false
     @FocusState private var isTextFieldFocused: Bool
     
-    @State var sortedCards: [FlashCard] = []
+    var sortedCards: [FlashCard] {
+        deck.cards.sorted { $0.sortOrder < $1.sortOrder }
+    }
     
     @State var mode = "add"
     
@@ -36,6 +38,9 @@ struct FlashcardView: View {
     @State var photo: UniversalImage = UniversalImage.symbol("photo")
     @State var photoTmp: UniversalImage = UniversalImage.symbol("photo")
     
+    @State var showQuizView: Bool = false
+    @State var btnDisabled: Bool = false
+    
     var body: some View {
         ZStack {
             
@@ -50,15 +55,15 @@ struct FlashcardView: View {
             ScrollView {
                 //MARK: Banner
                 Spacer()
-                    .frame(height: 75	)
+                    .frame(height: 75)
                 ZStack {
                     FlashcardBannerView(deck: deck, showCardModal: $showCardModal, showCreateDeckModal: $showCreateDeckModal, bindingDeck: $bindingDeck, deckMode: $deckMode)
                     VStack {
                         Spacer()
                         HStack {
 
-                            Button {
-                                // TODO: Add test mode
+                            NavigationLink {
+                                QuizView(deck: $deck)
                             } label: {
                                 Label("Take Quiz", systemImage: "questionmark.message")
                                     .font(.custom(Constants.Fonts.regular, size: 18))
@@ -73,10 +78,10 @@ struct FlashcardView: View {
                 }
                 Spacer()
                     .frame(height: 20)
-                FlashcardButtonsView(deck: deck, showCardModal: $showCardModal, mode: $mode, showMemoryPalaceModal: $showMemoryPalaceModal)
+                FlashcardButtonsView(deck: deck, showCardModal: $showCardModal, mode: $mode, showMemoryPalaceModal: $showMemoryPalaceModal, btnDisabled: $btnDisabled)
                 
                 // MARK: Flashcard
-                FlashcardCardView(deck: deck, flashcardIdx: $flashcardIdx)
+                FlashcardCardView(deck: deck, flashcardIdx: $flashcardIdx, showAddCard: $showCardModal, mode: $mode)
                     .id(deck.cards.count)
                 
                 RoundedRectangle(cornerRadius: 1.5)
@@ -87,22 +92,18 @@ struct FlashcardView: View {
                 FlashcardListView(deck: deck, isTextFieldFocused: $isTextFieldFocused, showCardModal: $showCardModal, mode: $mode, listIdx: $listIdx)
                     .id(deck.cards.count)
             }
-            .onAppear() {
-                sortedCards = deck.cards.sorted { $0.sortOrder < $1.sortOrder }
-                if deck.cards.count > 0 {
-                    question = sortedCards[flashcardIdx].question
-                    answer = sortedCards[flashcardIdx].answer
-                    img = sortedCards[flashcardIdx].img
+            .onChange(of: flashcardIdx) { _, newIdx in
+                if newIdx < deck.cards.count {
+                    btnDisabled = false
+                    print(newIdx, deck.cards.count)
+                    question = sortedCards[newIdx].question
+                    answer = sortedCards[newIdx].answer
+                    img = sortedCards[newIdx].img
                     
                     photoTmp = img
+                } else {
+                    btnDisabled = true
                 }
-            }
-            .onChange(of: flashcardIdx) { _, newIdx in
-                question = sortedCards[newIdx].question
-                answer = sortedCards[newIdx].answer
-                img = sortedCards[newIdx].img
-                
-                photoTmp = img
             }
             
             ModalBackdrop(toggleModal: $showCardModal)
@@ -117,6 +118,9 @@ struct FlashcardView: View {
             }
             
             ModalBackdrop(toggleModal: $showMemoryPalaceModal)
+            .onTapGesture {
+                isTextFieldFocused = false
+            }
             UploadPhotoModal(showPhotoModal: $showMemoryPalaceModal, photo: $photo, setPhotoTmp: $photoTmp, mode: "memory-palace")
                 .onChange(of: photo) {
                     sortedCards[flashcardIdx].img = photo
@@ -132,9 +136,6 @@ struct FlashcardView: View {
                     appState.hideTabBar = showMemoryPalaceModal
                 }
             
-        }
-        .onTapGesture {
-            isTextFieldFocused = false
         }
         .onChange(of: showCardModal) { _, newVal in
             appState.hideTabBar = showCardModal

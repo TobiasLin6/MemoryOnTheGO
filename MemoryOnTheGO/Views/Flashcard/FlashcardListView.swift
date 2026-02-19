@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FlashcardListView: View {
-    let deck: Deck
+    @State var deck: Deck
     @State var filteredCards: [FlashCard] = []
     
     @FocusState.Binding var isTextFieldFocused: Bool
@@ -36,6 +36,7 @@ struct FlashcardListView: View {
             ForEach(sortedFilteredCards.indices, id: \.self) { i in
                 FlashcardListCard(
                     card: sortedFilteredCards[i],
+                    deck: $deck,
                     showCardModal: $showCardModal,
                     mode: $mode,
                     listIdx: $listIdx,

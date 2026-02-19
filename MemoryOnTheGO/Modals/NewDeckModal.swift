@@ -78,7 +78,7 @@ struct NewDeckModal: View {
                                 name: deckName == "" ? "New Deck" : deckName,
                                 desc: deckDesc == "" ? "This is a new deck." : deckDesc,
                                 img: deckImg,
-                                cards: appleCards
+                                cards: []
                             )
                             
                             if mode == "add"{

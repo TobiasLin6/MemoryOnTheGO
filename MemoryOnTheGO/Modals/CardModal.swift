@@ -125,7 +125,7 @@ struct CardModal: View {
             ModalBackdrop(toggleModal: $showPhotoModal)
             UploadPhotoModal(showPhotoModal: $showPhotoModal, photo: $img, setPhotoTmp: .constant(UniversalImage.symbol("photo")))
         }
-        .gesture(DragGesture(coordinateSpace: .global)
+        .gesture(DragGesture(minimumDistance: 10, coordinateSpace: .global)
             .onChanged { value in
                 if mainOffset < 50 && value.translation.height > -10 {
                     gestureOffset = value.translation.height

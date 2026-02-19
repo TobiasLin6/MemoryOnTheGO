@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct MemoryOnTheGO: View {
     
@@ -14,7 +15,8 @@ struct MemoryOnTheGO: View {
     @State var tutorialStage: Int = -1  // -1 = tutorial not enabled
     
     @Environment(AppState.self) var appState
-    @Environment(\.modelContext) var context
+    
+    @Environment(\.modelContext) private var context
     
     @State var mode: String = "add"
     
@@ -35,8 +37,8 @@ struct MemoryOnTheGO: View {
                     if appState.currentPage == "home" || appState.currentPage == "decks" {
                         HomeView(showDeckModal: $showNewDeckModal, mode: $mode, bindingDeck: $bindingDeck)
                         
-                    } else if appState.currentPage == "about" {
-                        AboutView()
+                    } else if appState.currentPage == "quiz" {
+                        PopQuizView()
                     }
                 }
                 .id(appState.navID)
@@ -59,6 +61,9 @@ struct MemoryOnTheGO: View {
             .frame(width: geo.size.width, height: geo.size.height)
         }
         .ignoresSafeArea(.keyboard)
+        .onAppear() {
+            seedInitialDecks(context: context)
+        }
         
     }
         

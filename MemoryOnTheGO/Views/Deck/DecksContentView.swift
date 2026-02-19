@@ -18,22 +18,18 @@ struct DecksContentView: View {
     @Environment(AppState.self) var appState
     
     @Binding var lockModal: Bool
-    @State var currentChoice: String = "all"
+    @Binding var currentChoice: String
     @State private var scrollID: ScrollTarget?
     @State private var scrollDisabled: Bool = true
     @Environment(\.modelContext) private var context
-    
-    @Query(filter: #Predicate<Deck> { deck in
-        deck.deletedAt == nil
-    }, sort: \.sortOrder) private var allDecks: [Deck]
-    @Query(filter: #Predicate<Deck> { deck in
-        deck.deletedAt == nil && deck.pinned == true
-    }, sort: \.sortOrder) private var pinnedDecks: [Deck]
     
     @Binding var showDeckModal: Bool
     @Binding var mode: String
     
     @Binding var bindingDeck: Deck
+    
+    @Binding var filteredDecksList: [Deck]
+    @Binding var keyboardHeight: CGFloat
     
     var body: some View {
         ScrollView {
@@ -43,13 +39,13 @@ struct DecksContentView: View {
                     .padding(.top, 35)
                     .id(ScrollTarget.top)
                     .scrollPosition(id: $scrollID, anchor: .top)
-                // TODO: Add content
-                ForEach(currentChoice == "pinned" ? pinnedDecks: allDecks) {deck in
+
+                ForEach(filteredDecksList) {deck in
                     DeckItemView(deck: deck, bindingDeck: $bindingDeck, showDeckModal: $showDeckModal, mode: $mode)
                         .id(ScrollTarget.deck(deck.id))
                     }
                 
-                Spacer().frame(height: 160)
+                Spacer().frame(height: keyboardHeight > 0 ? 450 : 220)
                     .id(ScrollTarget.bottom)
                 }
             .scrollTargetLayout()
@@ -74,6 +70,6 @@ struct DecksContentView: View {
 
 
 #Preview {
-    DecksContentView(lockModal: .constant(false), showDeckModal: .constant(false), mode: .constant("add"), bindingDeck: .constant(appleTriviaDeck))
+    DecksContentView(lockModal: .constant(false), currentChoice: .constant("all"), showDeckModal: .constant(false), mode: .constant("add"), bindingDeck: .constant(appleTriviaDeck), filteredDecksList: .constant([]), keyboardHeight: .constant(0))
         .environment(AppState())
 }

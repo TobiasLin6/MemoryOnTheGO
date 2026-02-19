@@ -49,8 +49,11 @@ struct CustomTabBarView: View {
                         withAnimation(.easeOut) {
                             appState.navID = UUID()
                             }
-                        appState.currentPage = "about"
-                    } label: {Label("About", systemImage: "questionmark.circle")}
+                        appState.currentPage = "quiz"
+                    } label: {
+                        Label("Pop Quiz", systemImage: "questionmark.circle")
+                    }
+                    .offset(x:6)
                 }
                 .foregroundColor(Color("main-gray"))
                 .padding(25)

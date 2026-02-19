@@ -10,6 +10,7 @@ import VisualEffectBlurView
 import UIKit
 
 struct HomeView: View {
+    @FocusState var focused: Bool
     
     let screenWidth = UIScreen.main.bounds.width
     let screenHeight = UIScreen.main.bounds.height
@@ -30,31 +31,16 @@ struct HomeView: View {
                     
                     // MARK: Tutorial
                     TutorialBtn()
-                    
-                    // MARK: Settings
-                    HStack {
-                        Spacer()
-                        VStack {
-                            Button {
-                                
-                            } label: {
-                                Image(systemName: "gearshape")
-                                    .resizable()
-                                    .frame(width: 28, height: 28)
-                                    .foregroundColor(Color("deck-itm-pin"))
-                            }
-                            Spacer()
-                        }
-                        .padding(.vertical, 55)
-                    }
-                    .padding(.horizontal, 30)
 
                     // MARK: Decks Modal
-                    DecksView(showDeckModal: $showDeckModal, mode: $mode, bindingDeck: $bindingDeck)
+                    DecksView(showDeckModal: $showDeckModal, mode: $mode, bindingDeck: $bindingDeck, focused: $focused)
                     
                     
                 }
                 .frame(width: screenWidth, height: screenHeight)
+                .onTapGesture() {
+                    focused = false
+                }
             }
             .ignoresSafeArea()
             .scrollDisabled(true)

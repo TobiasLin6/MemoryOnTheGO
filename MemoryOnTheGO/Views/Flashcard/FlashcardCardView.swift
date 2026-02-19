@@ -20,6 +20,9 @@ struct FlashcardCardView: View {
         deck.cards.sorted { $0.sortOrder < $1.sortOrder }
     }
     
+    @Binding var showAddCard: Bool
+    @Binding var mode: String
+    
     var body: some View {
         ZStack {
             // MARK: Swipe Actions
@@ -93,33 +96,31 @@ struct FlashcardCardView: View {
                     .frame(width: 375, height:45)
                     .offset(y: -105)
                 
-                
-                if cardFront {
-                    HStack {
-                        Spacer()
-                        Text("Card \(flashcardIdx + 1) / \(deck.cards.count)")
-                            .font(.custom(Constants.Fonts.regular, size: 14))
-                            .foregroundColor(Color("flashcard-top"))
-                            .offset(y: 105)
+                if flashcardIdx < deck.cards.count {
+                    if cardFront {
+                        HStack {
+                            Spacer()
+                            Text("Card \(flashcardIdx + 1) / \(deck.cards.count)")
+                                .font(.custom(Constants.Fonts.regular, size: 14))
+                                .foregroundColor(Color("flashcard-top"))
+                                .offset(y: 105)
+                        }
+                        .padding(23)
+                    } else {
+                        HStack {
+                            Text("Card \(flashcardIdx + 1) / \(deck.cards.count)")
+                                .font(.custom(Constants.Fonts.regular, size: 14))
+                                .foregroundColor(Color("flashcard-top"))
+                                .offset(y: 105)
+                                .rotation3DEffect(.degrees(180), axis: (x: 0, y: -1, z: 0))
+                            Spacer()
+                        }
+                        .padding(23)
                     }
-                    .padding(23)
-                } else {
-                    HStack {
-                        Text("Card \(flashcardIdx + 1) / \(deck.cards.count)")
-                            .font(.custom(Constants.Fonts.regular, size: 14))
-                            .foregroundColor(Color("flashcard-top"))
-                            .offset(y: 105)
-                            .rotation3DEffect(.degrees(180), axis: (x: 0, y: -1, z: 0))
-                        Spacer()
-                    }
-                    .padding(23)
                 }
                 
-                
-                
-                
                 // MARK: Content
-                if deck.cards.count > 0 {
+                if flashcardIdx < deck.cards.count && deck.cards.count > 0 {
                     if cardFront {
                         Text(sortedCards[flashcardIdx].question)
                             .font(.custom(Constants.Fonts.regular, size: 25))
@@ -136,6 +137,49 @@ struct FlashcardCardView: View {
                             .foregroundColor(.white)
                             .rotation3DEffect(.degrees(180), axis: (x: 0, y: -1, z: 0))
                     }
+                } else {
+                    VStack {
+                        Text(deck.cards.count <= 0 ? "Empty Deck" : "No More Cards")
+                            .font(.custom(Constants.Fonts.regular, size: 28))
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(.white)
+                            .padding(.top, 35)
+                            .padding(.bottom, 0.25)
+                        Text(deck.cards.count <= 0 ? "Add a card to get \n started" : "This is the end of your \n deck.")
+                            .font(.custom(Constants.Fonts.regular, size: 21))
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(.white)
+                        Button {
+                            showAddCard = true
+                            mode = "add"
+                        } label: {
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 15)
+                                    .fill(LinearGradient(gradient:
+                                                            Gradient(colors:[Color("mem-palace-bg-light"), Color("mem-palace-bg-dark")]),
+                                                         startPoint: .topLeading,
+                                                         endPoint: .bottomTrailing
+                                                         
+                                                        )
+                                    )
+                                    .frame(width: 175, height: 55)
+                                HStack {
+                                    Image(systemName: "rectangle.on.rectangle.angled")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: 27, height: 27)
+                                        .padding(.trailing, 7)
+                                    Text("Add Card")
+                                        .font(.custom(Constants.Fonts.regular, size: 18))
+                                }
+                                .padding(.horizontal, 20)
+                                .foregroundColor(Color("main-gray"))
+                                
+                            }
+                        }
+                    }
+                    .offset(y: 10)
+
                 }
             }
             .rotation3DEffect(
@@ -143,20 +187,24 @@ struct FlashcardCardView: View {
                 axis: (x: 0, y: -1, z: 0)
             )
             .onTapGesture {
-                withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-                    cardFront.toggle()
+                if flashcardIdx < deck.cards.count {
+                    withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                        cardFront.toggle()
+                    }
                 }
             }
             .offset(x: xOffset, y: yOffset)
             .gesture(
                     DragGesture()
                         .onChanged { gesture in
-                            if abs(gesture.translation.width) > abs(gesture.translation.height) {
-                                xOffset = max(min(gesture.translation.width, 110), -110)
-                                yOffset = 0
-                            } else {
-                                xOffset = 0
-                                yOffset = max(min(gesture.translation.height, 75), -75)
+                            if flashcardIdx < deck.cards.count {
+                                if abs(gesture.translation.width) > abs(gesture.translation.height) {
+                                    xOffset = max(min(gesture.translation.width, 110), -110)
+                                    yOffset = 0
+                                } else {
+                                    xOffset = 0
+                                    yOffset = max(min(gesture.translation.height, 75), -75)
+                                }
                             }
                         }
                         .onEnded { _ in
@@ -287,11 +335,11 @@ struct FlashcardCardView: View {
             .padding(.horizontal, 8)
             .offset(y: 17)
             .onAppear() {
-                rightDisabled = flashcardIdx >= deck.cards.count - 1
+                rightDisabled = flashcardIdx >= deck.cards.count
                 leftDisabled = flashcardIdx <= 0
             }
             .onChange(of: flashcardIdx) {_, newVal in
-                rightDisabled = newVal >= deck.cards.count - 1
+                rightDisabled = newVal >= deck.cards.count
                 leftDisabled = newVal <= 0
             }
             
@@ -303,5 +351,5 @@ struct FlashcardCardView: View {
 }
 
 #Preview {
-    FlashcardCardView(deck: appleTriviaDeck, flashcardIdx: .constant(0))
+    FlashcardCardView(deck: appleTriviaDeck, flashcardIdx: .constant(8), showAddCard: .constant(false), mode: .constant("add"))
 }
