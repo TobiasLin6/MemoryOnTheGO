@@ -95,7 +95,6 @@ struct FlashcardView: View {
             .onChange(of: flashcardIdx) { _, newIdx in
                 if newIdx < deck.cards.count {
                     btnDisabled = false
-                    print(newIdx, deck.cards.count)
                     question = sortedCards[newIdx].question
                     answer = sortedCards[newIdx].answer
                     img = sortedCards[newIdx].img

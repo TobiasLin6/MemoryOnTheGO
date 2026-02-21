@@ -10,9 +10,13 @@ import SwiftData
 
 struct MemoryOnTheGO: View {
     
+    @Query(filter: #Predicate<Deck> { deck in
+        deck.deletedAt == nil
+    }, sort: \.sortOrder) private var allDecks: [Deck]
+    @State var error: String = ""
+    
     @State var devMode: Bool = true
     @State var showNewDeckModal: Bool = false
-    @State var tutorialStage: Int = -1  // -1 = tutorial not enabled
     
     @Environment(AppState.self) var appState
     
@@ -21,6 +25,7 @@ struct MemoryOnTheGO: View {
     @State var mode: String = "add"
     
     @State var bindingDeck: Deck = Deck(name: "New Deck", desc: "This is a new deck")
+    @State var randomQuizDeck: Deck = Deck(name: "", desc: "")
     
     var body: some View {
         GeometryReader { geo in
@@ -38,7 +43,20 @@ struct MemoryOnTheGO: View {
                         HomeView(showDeckModal: $showNewDeckModal, mode: $mode, bindingDeck: $bindingDeck)
                         
                     } else if appState.currentPage == "quiz" {
-                        PopQuizView()
+                        QuizView(
+                            deck: $randomQuizDeck,
+                            error: error
+                        )
+                        .onChange(of: appState.currentPage) { oldPage, newPage in
+                            if newPage == "quiz" {
+                                runRandomDeckEngine()
+                            }
+                        }
+                        .onChange(of: allDecks, initial: true) {
+                            if appState.currentPage == "quiz" {
+                                runRandomDeckEngine()
+                            }
+                        }
                     }
                 }
                 .id(appState.navID)
@@ -66,8 +84,21 @@ struct MemoryOnTheGO: View {
         }
         
     }
+    
+    private func runRandomDeckEngine() {
+        let eligibleDecks = allDecks.filter {$0.cards.count >= 4 && $0.deletedAt == nil}
+
+        if let randomDeck = eligibleDecks.randomElement() {
+            randomQuizDeck = randomDeck
+            error = ""
+        } else {
+            error = "No valid deck with 4 or more cards."
+        }
+    }
         
 }
+
+
 
 #Preview {
     MemoryOnTheGO()

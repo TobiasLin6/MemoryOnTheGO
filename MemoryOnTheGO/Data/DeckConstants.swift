@@ -10,17 +10,17 @@ import Foundation
 struct DeckConstants {
     static let defaultDecks: [Deck] = [
         Deck(
-            name: "Apple History & Lore1",
+            name: "Apple History & Lore 1",
             desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
             cards: appleCards,
         ),
         Deck(
-            name: "Apple History & Lore2",
+            name: "Apple History & Lore 2",
             desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
             cards: appleCards,
         ),
         Deck(
-            name: "Apple History & Lore3",
+            name: "Apple History & Lore 3",
             desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
             cards: appleCards,
         )
