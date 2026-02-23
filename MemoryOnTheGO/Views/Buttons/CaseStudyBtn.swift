@@ -7,14 +7,16 @@
 
 import SwiftUI
 
-struct TutorialBtn: View {
+struct CaseStudyBtn: View {
     
     @Environment(AppState.self) var appState
+    
+    @Binding var showCaseStudy: Bool
     
     var body: some View {
         HStack {
             Button {
-                // TODO: Add tutorial sequence
+                showCaseStudy = true
             } label: {
                 ZStack {
                     // MARK: Background
@@ -29,7 +31,7 @@ struct TutorialBtn: View {
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     ))
-                    .frame(width: 175, height: 80)
+                    .frame(width: 160, height: 80)
                     
                     // MARK: Content
                     HStack {
@@ -43,12 +45,12 @@ struct TutorialBtn: View {
                         Spacer()
                             .frame(width: 16)
                         
-                        Text("Take a \n Tutorial")
+                        Text("Case \nStudy")
                             .foregroundColor(.white)
                             .font(.custom(Constants.Fonts.regular, size: 20))
                             .shadow(color: .white, radius: 1)
                     }
-                    .padding(.horizontal, 20)
+                    .padding(.leading, -10)
                 }
             }
             .buttonStyle(PlainButtonStyle())
@@ -60,6 +62,6 @@ struct TutorialBtn: View {
 }
 
 #Preview {
-    TutorialBtn()
+    CaseStudyBtn(showCaseStudy: .constant(true))
         .environment(AppState())
 }

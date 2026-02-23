@@ -14,8 +14,13 @@ struct UniversalImageView: View {
     var body: some View {
         switch source {
         case .asset(let name):
-            Image(name)
-                .resizable()
+            if UIImage(named: name) != nil {
+                Image(name)
+                    .resizable()
+            } else {
+                Image(systemName: "photo")
+                    .resizable()
+            }
             
         case .imageData(let data):
             if let uiImage = UIImage(data: data) {

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct QuizView: View {
     @Binding var deck: Deck
+    let isPopQuiz: Bool
     
     @State private var currentIdx = 0
     @State private var options: [String] = []
@@ -38,7 +39,8 @@ struct QuizView: View {
                         deck: deck,
                         score: score,
                         correctQuestions: correctQuestions,
-                        restart: restartQuiz
+                        restart: restartQuiz,
+                        isPopQuiz: isPopQuiz
                     )
                 }
             } else {
@@ -48,6 +50,7 @@ struct QuizView: View {
                         Spacer()
                             .frame(height: 5)
                         QuizBannerView(deck: deck)
+                            .offset(y: isPopQuiz ? 20 : 0)
                         QuizContent(
                             questionNum: currentIdx + 1,
                             questionCount: deck.cards.count,
@@ -57,7 +60,7 @@ struct QuizView: View {
                             btnColor: buttonColor,
                             next: nextQuestion
                         )
-                        .offset(y: -25)
+                        .offset(y: isPopQuiz ? 0 : -25)
                     }
                     .offset(y:-50)
                     
@@ -150,5 +153,5 @@ struct QuizView: View {
 }
 
 #Preview {
-    QuizView(deck: .constant(appleTriviaDeck))
+    QuizView(deck: .constant(appleTriviaDeck), isPopQuiz: true)
 }

@@ -45,6 +45,7 @@ struct MemoryOnTheGO: View {
                     } else if appState.currentPage == "quiz" {
                         QuizView(
                             deck: $randomQuizDeck,
+                            isPopQuiz: true,
                             error: error
                         )
                         .onChange(of: appState.currentPage) { oldPage, newPage in
