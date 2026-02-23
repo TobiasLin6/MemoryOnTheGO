@@ -25,9 +25,9 @@ Designed specifically for the Swift Student Challenge, this application moves be
 Since this project was built for the Swift Student Challenge, it can be easily run in Xcode.
 
 1.  Download or clone the repository.
-2.  Open the `MemoryOnTheGO.swiftpm` file in Xcode.
-3.  Ensure your target simulator is set to iPhone 17 Pro.
-4.  Hit the **Play** button (`Cmd + R`) to build and run the application.
+2.  Open the `MemoryOnTheGO.xcodeproj` file in Xcode.
+4.  Ensure your target simulator is set to iPhone 17 Pro.
+5.  Hit the **Play** button (`Cmd + R`) to build and run the application.
 
 *Note: To fully experience the notification sequence, you must grant notification permissions upon the first launch.*
 
