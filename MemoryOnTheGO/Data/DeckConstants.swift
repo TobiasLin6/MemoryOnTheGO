@@ -713,7 +713,7 @@ let AppleFactsCards: [FlashCard] = [
 ]
 
 struct DeckConstants {
-    static let defaultDecks: [Deck] = [
+    @MainActor static let defaultDecks: [Deck] = [
         Deck(
             name: "Apple Facts",
             desc: "Uncover the hardware, software, and key figures behind the tech empire.",

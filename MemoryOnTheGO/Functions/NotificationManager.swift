@@ -8,6 +8,7 @@
 import Foundation
 import UserNotifications
 
+@MainActor
 class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     
     static let instance = NotificationManager()
@@ -21,10 +22,12 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     func requestAuthorization() {
         let options: UNAuthorizationOptions = [.alert, .sound, .badge]
         UNUserNotificationCenter.current().requestAuthorization(options: options) { granted, error in
-            if granted {
-                self.scheduleSequence()
-            } else if let error = error {
-                print("Permission Error: \(error.localizedDescription)")
+            Task { @MainActor in
+                if granted {
+                    self.scheduleSequence()
+                } else if let error = error {
+                    print("Permission Error: \(error.localizedDescription)")
+                }
             }
         }
     }
@@ -35,7 +38,6 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
         if UserDefaults.standard.object(forKey: "FirstOpenTimestamp") == nil {
             let firstOpenDate = Date()
             UserDefaults.standard.set(firstOpenDate, forKey: "FirstOpenTimestamp")
-            
             
             let content1 = UNMutableNotificationContent()
             content1.title = "Welcome to MemoryOnTheGO! 🚀"
@@ -72,22 +74,22 @@ class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     }
     
     // MARK: - UNUserNotificationCenterDelegate
-    
-    func userNotificationCenter(
+
+    nonisolated func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification,
         withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
     ) {
         completionHandler([.banner, .sound])
     }
-    
-    func userNotificationCenter(
+
+    nonisolated func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         didReceive response: UNNotificationResponse,
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
-        DispatchQueue.main.async {
-            self.appState?.switchToQuiz()
+        Task { @MainActor in
+            NotificationManager.instance.appState?.switchToQuiz()
         }
         
         completionHandler()
