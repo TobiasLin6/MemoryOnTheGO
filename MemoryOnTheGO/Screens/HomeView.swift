@@ -12,6 +12,8 @@ import UIKit
 struct HomeView: View {
     @FocusState var focused: Bool
     
+    @Environment(AppState.self) var appState
+    
     let screenWidth = UIScreen.main.bounds.width
     let screenHeight = UIScreen.main.bounds.height
     
@@ -19,6 +21,8 @@ struct HomeView: View {
     @Binding var mode: String
 
     @Binding var bindingDeck: Deck
+    
+    @State var showCaseStudy: Bool = false
     
     var body: some View {
             ScrollView {
@@ -30,12 +34,18 @@ struct HomeView: View {
                         .ignoresSafeArea()
                     
                     // MARK: Tutorial
-                    TutorialBtn()
+                    CaseStudyBtn(showCaseStudy: $showCaseStudy)
 
                     // MARK: Decks Modal
                     DecksView(showDeckModal: $showDeckModal, mode: $mode, bindingDeck: $bindingDeck, focused: $focused)
                     
-                    
+                    ModalBackdrop(toggleModal: $showCaseStudy)
+                    CaseStudyModal(showCaseStudy: $showCaseStudy)
+                        .opacity(showCaseStudy ? 1.0 : 0.0)
+                        .animation(.easeInOut(duration: 0.25), value: showCaseStudy)
+                        .onChange(of: AppState().currentPage) {
+                            showCaseStudy = false
+                        }
                 }
                 .frame(width: screenWidth, height: screenHeight)
                 .onTapGesture() {

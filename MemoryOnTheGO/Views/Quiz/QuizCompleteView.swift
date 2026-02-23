@@ -12,6 +12,7 @@ struct QuizCompleteView: View {
     let score: Int
     @State var correctQuestions: [Bool]
     let restart: () -> Void
+    let isPopQuiz: Bool
     
     var body: some View {
         VStack {
@@ -19,6 +20,7 @@ struct QuizCompleteView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 55)
+                .padding(.top, 20)
             Text("Quiz Complete!")
                 .multilineTextAlignment(.center)
                 .font(.custom(Constants.Fonts.regular, size: 34))
@@ -68,7 +70,7 @@ struct QuizCompleteView: View {
             
             .cornerRadius(12)
         }
-        .offset(y: -25)
+        .offset(y: isPopQuiz ? 10 : -40)
         
 
     }
@@ -81,6 +83,7 @@ struct QuizCompleteView: View {
         deck: appleTriviaDeck,
         score: 5,
         correctQuestions: [true, true, false, false, false, true, true, true],
-        restart: {}
+        restart: {},
+        isPopQuiz: true
     )
 }

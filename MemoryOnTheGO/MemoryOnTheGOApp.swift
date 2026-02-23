@@ -12,10 +12,16 @@ import SwiftData
 @main
 struct MemoryOnTheGOApp: App {
     @State private var appState = AppState()
+    let notify = NotificationManager.instance
+    
     var body: some Scene {
         WindowGroup {
             MemoryOnTheGO()
                 .environment(appState)
+                .onAppear {
+                    notify.appState = appState
+                    notify.requestAuthorization()
+                }
         }
         .modelContainer(for: [FlashCard.self, Deck.self])
     }

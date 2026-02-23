@@ -63,7 +63,7 @@ struct FlashcardView: View {
                         HStack {
 
                             NavigationLink {
-                                QuizView(deck: $deck)
+                                QuizView(deck: $deck, isPopQuiz: false)
                             } label: {
                                 Label("Take Quiz", systemImage: "questionmark.message")
                                     .font(.custom(Constants.Fonts.regular, size: 18))
@@ -133,6 +133,11 @@ struct FlashcardView: View {
                 }
                 .onChange(of: showMemoryPalaceModal) {
                     appState.hideTabBar = showMemoryPalaceModal
+                }
+                .onAppear() {
+                    if sortedCards.count > 0 {
+                        photoTmp = sortedCards[0].img
+                    }
                 }
             
         }

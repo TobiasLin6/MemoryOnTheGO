@@ -44,7 +44,7 @@ struct QuizBannerView: View {
                                 .font(.custom(Constants.Fonts.regular, size: 25))
                                 .foregroundColor(Color("main-gray"))
                                 .frame(width: 175, height: 70, alignment: .leading)
-                                .offset(y: 36)
+                                .offset(y: 26)
                             VStack{
                                 Text(deck.desc)
                                     .font(.custom(Constants.Fonts.regular, size: 15))
@@ -53,7 +53,7 @@ struct QuizBannerView: View {
                                 Spacer()
                             }
                             .frame(height:62)
-                            .offset(y:23)
+                            .offset(y:10)
                         }
                         .frame(width: 225)
                     }
@@ -61,7 +61,7 @@ struct QuizBannerView: View {
                     UniversalImageView(source:deck.img)
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 135, height: 135)
-                        .offset(x: -20, y: -25)
+                        .offset(x: -20, y: -40)
                         .foregroundColor(Color("main-gray"))
                 }
 

@@ -78,7 +78,6 @@ struct DeckItemView: View {
                     
                     // Edit Button
                     Button() {
-                        // TODO: Add edit functionality
                         showDeckModal = true
                         mode = "edit"
                         bindingDeck = deck
