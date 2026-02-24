@@ -104,6 +104,18 @@ struct FlashcardView: View {
                     btnDisabled = true
                 }
             }
+            .onAppear() {
+                if flashcardIdx < deck.cards.count {
+                    btnDisabled = false
+                    question = sortedCards[flashcardIdx].question
+                    answer = sortedCards[flashcardIdx].answer
+                    img = sortedCards[flashcardIdx].img
+                    
+                    photoTmp = img
+                } else {
+                    btnDisabled = true
+                }
+            }
             
             ModalBackdrop(toggleModal: $showCardModal)
             if mode == "edit" {

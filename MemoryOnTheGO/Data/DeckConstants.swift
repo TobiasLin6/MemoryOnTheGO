@@ -125,7 +125,7 @@ let BiologyCards: [FlashCard] = [
     FlashCard(
         question: "What are single-celled organisms that lack a nucleus?",
         answer: "Bacteria",
-        img: UniversalImage.asset("G-Bedford-Notstrand Aves"),
+        img: UniversalImage.asset("G-Bedford-Notstrand-Aves"),
         sortOrder: 8
     ),
     FlashCard(
@@ -295,7 +295,7 @@ let EarthScienceCards: [FlashCard] = [
     FlashCard(
         question: "What highly viscous, ductile layer of the Earth's upper mantle lies directly beneath the lithosphere and allows tectonic plates to move?",
         answer: "Asthenosphere",
-        img: UniversalImage.asset("R-Atlantic-Av-Barclays-Center"),
+        img: UniversalImage.asset("R-Atlantic-Ave-Barclays-Center"),
         sortOrder: 12
     ),
     FlashCard(
@@ -553,7 +553,7 @@ let LiteratureCards : [FlashCard] = [
     FlashCard(
         question: "Which Southern Gothic writer authored The Sound and the Fury?",
         answer: "Faulkner (William)",
-        img: UniversalImage.asset("F-47-50-Sts-Rockerfeller-Ctr"),
+        img: UniversalImage.asset("F-47-50-Sts-Rockefeller-Ctr"),
         sortOrder: 10
     ),
     FlashCard(
@@ -706,7 +706,7 @@ let AppleFactsCards: [FlashCard] = [
     ),
     FlashCard(
         question: "What Apple software subsidiary was created in 1987 to develop applications like MacWrite and FileMaker?",
-        answer: "Claris",
+        answer: "f",
         img: UniversalImage.asset("W-City-Hall"),
         sortOrder: 19
     ),
@@ -718,50 +718,50 @@ struct DeckConstants {
             name: "Apple Facts",
             desc: "Uncover the hardware, software, and key figures behind the tech empire.",
             pinned: true,
-            img: UniversalImage.asset("W-train"),
+            img: UniversalImage.asset("1-W-train"),
             cards: AppleFactsCards,
         ),
         Deck(
             name: "Physics",
             desc: "Tackle the universal laws governing classical mechanics, electromagnetism, and energy.",
             pinned: true,
-            img: UniversalImage.asset("1-train"),
+            img: UniversalImage.asset("1-1-train"),
             cards: PhysicsCards
         ),
         Deck(
             name: "US History",
             desc: "Master the pivotal events and founding documents of America.",
-            img: UniversalImage.asset("J-train"),
+            img: UniversalImage.asset("1-J-train"),
             cards: USHistoryCards
         ),
         Deck(
             name: "Biology",
             desc: "Explore the fundamental cellular structures and genetics of living organisms.",
-            img: UniversalImage.asset("G-train"),
+            img: UniversalImage.asset("1-G-train"),
             cards: BiologyCards
         ),
         Deck(
             name: "Chemistry",
             desc: "Test your grasp of the periodic table and atomic principles.",
-            img: UniversalImage.asset("L-train"),
+            img: UniversalImage.asset("1-L-train"),
             cards: ChemistryCards
         ),
         Deck(
             name: "Earth Science",
             desc: "Discover the dynamic geological and atmospheric forces shaping our planet.",
-            img: UniversalImage.asset("R-train"),
+            img: UniversalImage.asset("1-R-train"),
             cards: EarthScienceCards
         ),
         Deck(
             name: "Geography",
             desc: "Identify international capital cities, major rivers, and continental landmarks worldwide.",
-            img: UniversalImage.asset("7-train"),
+            img: UniversalImage.asset("1-7-train"),
             cards: GeographyCards
         ),
         Deck(
             name: "Literature",
             desc: "Journey through classic poetry, dystopian fiction, and sweeping historical novels.",
-            img: UniversalImage.asset("F-train"),
+            img: UniversalImage.asset("1-F-train"),
             cards: LiteratureCards
         ),
         

@@ -17,6 +17,7 @@ struct UniversalImageView: View {
             if UIImage(named: name) != nil {
                 Image(name)
                     .resizable()
+                    .cornerRadius(8)
             } else {
                 Image(systemName: "photo")
                     .resizable()

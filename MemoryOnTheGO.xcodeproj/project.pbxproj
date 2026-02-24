@@ -11,7 +11,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		79B980432F19ADD4001E3D61 /* MemoryOnTheGO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MemoryOnTheGO.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		79B980432F19ADD4001E3D61 /* MemoryOnTheGO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = MemoryOnTheGO.app; path = "/Users/tobiaslin/Documents/XCode/MemoryOnTheGO/build/Debug-iphoneos/MemoryOnTheGO.app"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -38,16 +38,7 @@
 			isa = PBXGroup;
 			children = (
 				79B980442F19ADD4001E3D61 /* MemoryOnTheGO */,
-				79BD46472F13374600E68C56 /* Products */,
 			);
-			sourceTree = "<group>";
-		};
-		79BD46472F13374600E68C56 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				79B980432F19ADD4001E3D61 /* MemoryOnTheGO.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -104,7 +95,7 @@
 				79B980C52F19EC46001E3D61 /* XCRemoteSwiftPackageReference "VisualEffectBlurView" */,
 			);
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 79BD46472F13374600E68C56 /* Products */;
+			productRefGroup = 79BD463D2F13374600E68C56;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (

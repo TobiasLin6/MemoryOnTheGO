@@ -74,11 +74,17 @@ struct NewDeckModal: View {
                         GhostBtn(title: "Change Photo") {showPhotoModal = true}
                             .padding(.bottom, 20)
                         SubmitBtn(title: mode == "add" ? "Create Deck" : "Confirm Edits") {
+                            var cards: [FlashCard] = []
+                            
+                            if deck != nil {
+                                cards = deck!.cards
+                            }
+                            
                             let newDeck = Deck(
                                 name: deckName == "" ? "New Deck" : deckName,
                                 desc: deckDesc == "" ? "This is a new deck." : deckDesc,
                                 img: deckImg,
-                                cards: []
+                                cards: cards
                             )
                             
                             if mode == "add"{

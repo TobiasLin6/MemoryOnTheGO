@@ -50,10 +50,12 @@ struct CaseStudyModal: View {
             Group {
                 Text("Welcome to \n MemoryOnTheGo!")
                     .font(.custom(Constants.Fonts.bold, size: 28))
+                    .foregroundColor(.white)
                     .multilineTextAlignment(.center)
                     .padding(.bottom, 5)
                 Text("        Hi, I'm Tobias, the creator of this app. Living in the hustle of NYC's rapidly evolving tech scene, I constantly strugged with information overload and retaining new ideas. To solve this, I developed MemoryOnTheGo, an app rooted in professional research that leverages techniques like the memory palace to help users organize and lock in knowledge. I hope you enjoy!")
                     .font(.custom(Constants.Fonts.regular, size: 18))
+                    .foregroundColor(.white)
                     .padding(.bottom, 15)
                     .lineSpacing(5)
                 Text("If you're interested in seeing my full case study, go to:")
